@@ -306,7 +306,7 @@
     <script>
         let packsData = [];
         let currentPage = 1;
-        const itemsPerPage = 15;
+        const itemsPerPage = 15; // 3 colunas x 5 linhas = 15 itens por página
 
         function initAuth() {
             let currentUser = localStorage.getItem('site_current_user');
@@ -383,7 +383,7 @@
                             }
                         }
 
-                        // ALTERAÇÃO AQUI: Usando unshift em vez de push para colocar os novos packs (maiores números) sempre no topo/início
+                        // Coloca sempre os packs mais novos no topo
                         packsData.unshift({ title, image, link });
                         consecutiveFailures = 0;
                     } else {
