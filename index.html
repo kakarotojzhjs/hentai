@@ -318,7 +318,7 @@
         let packsData = [];
         let currentPage = 1;
         const itemsPerPage = 15;
-        let mySessionId = 'user_' + Math.random().toString(36.substring(2, 9));
+        let mySessionId = 'user_' + Math.random().toString(36).substring(2, 9);
 
         window.initAuth = async function() {
             let currentUser = localStorage.getItem('site_current_user');
@@ -331,6 +331,7 @@
             }
             escutarContadorGlobal();
             iniciarPresencaOnline();
+            autoDiscoverPacks();
         }
 
         window.handleLogin = async function() {
@@ -374,16 +375,16 @@
             const presenceRef = doc(db, "usuarios_online", mySessionId);
 
             // Regista que está online
-            setDoc(presenceRef, { ultimaVez: serverTimestamp() });
+            setDoc(presenceRef, { ultimaVez: serverTimestamp() }).catch(e => {});
 
             // Atualiza o sinal de vida a cada 15 segundos
             setInterval(() => {
-                setDoc(presenceRef, { ultimaVez: serverTimestamp() }, { merge: true });
+                setDoc(presenceRef, { ultimaVez: serverTimestamp() }, { merge: true }).catch(e => {});
             }, 15000);
 
             // Remove o usuário online se fechar a aba ou sair
             window.addEventListener('beforeunload', () => {
-                deleteDoc(presenceRef);
+                deleteDoc(presenceRef).catch(e => {});
             });
 
             // Escuta quantos estão com o site aberto
@@ -509,17 +510,12 @@
             if (paginatedItems.length === 0) return;
 
             paginatedItems.forEach(pack => {
-                appendCardViewCard(pack);
+                appendCardToGrid(pack);
             });
 
             updatePaginationControls();
         }
 
-        // Correção rápida para renderizar card
-        window.appendCardViewCard = function(pack) {
-            appendCardToGrid(pack);
-        }
-
         function updatePaginationControls() {
             const totalPages = Math.ceil(packsData.length / itemsPerPage) || 1;
-     
+            document.getElementById('page-info').innerText = `Página ${curren
