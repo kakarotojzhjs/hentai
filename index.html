@@ -267,8 +267,7 @@
             <h2>Bem-vindo(a)</h2>
             <p>Insira seu nome de usuário para acessar o painel.</p>
             <input type="text" id="username-input" placeholder="Seu nome..." autocomplete="off">
-            <!-- Removido o onclick direto para evitar travamento no telemóvel -->
-            <button class="btn-submit" id="btn-entrar">Entrar</button>
+            <button class="btn-submit" id="btn-entrar" type="button">Entrar</button>
         </div>
     </div>
 
@@ -280,7 +279,7 @@
             <div class="counter-badge online">🟢 Online: <span id="online-counter">1</span></div>
             <!-- Badge Cadastrados -->
             <div class="counter-badge">👥 Cadastrados: <span id="user-counter">...</span></div>
-            <button class="btn-change-name" id="btn-alterar">Alterar</button>
+            <button class="btn-change-name" id="btn-alterar" type="button">Alterar</button>
         </div>
     </header>
 
@@ -298,7 +297,7 @@
         </div>
     </footer>
 
-    <!-- Script com Firebase e Ligação Segura de Botões -->
+    <!-- Script com Firebase e Ligação Segura Completa -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
         import { getFirestore, collection, doc, getDoc, setDoc, deleteDoc, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
@@ -336,7 +335,8 @@
         }
 
         async function handleLogin() {
-            const input = document.getElementById('username-input').value.trim();
+            const inputField = document.getElementById('username-input');
+            const input = inputField ? inputField.value.trim() : '';
             if (!input) {
                 alert('Digite um nome válido.');
                 return;
@@ -361,16 +361,29 @@
         }
 
         function openLoginModal() {
-            document.getElementById('username-input').value = localStorage.getItem('site_current_user') || '';
+            const inputField = document.getElementById('username-input');
+            if (inputField) {
+                inputField.value = localStorage.getItem('site_current_user') || '';
+            }
             document.getElementById('login-modal').style.display = 'flex';
         }
 
-        // Ligação segura dos botões via JavaScript (resolve o problema do telemóvel)
-        document.getElementById('btn-entrar').addEventListener('click', handleLogin);
-        document.getElementById('username-input').addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') handleLogin();
+        // Executa apenas quando o HTML estiver totalmente pronto (Garante o funcionamento no telemóvel)
+        document.addEventListener('DOMContentLoaded', () => {
+            const btnEntrar = document.getElementById('btn-entrar');
+            const usernameInput = document.getElementById('username-input');
+            const btnAlterar = document.getElementById('btn-alterar');
+
+            if (btnEntrar) btnEntrar.addEventListener('click', handleLogin);
+            if (usernameInput) {
+                usernameInput.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') handleLogin();
+                });
+            }
+            if (btnAlterar) btnAlterar.addEventListener('click', openLoginModal);
+
+            initAuth();
         });
-        document.getElementById('btn-alterar').addEventListener('click', openLoginModal);
 
         function escutarContadorGlobal() {
             onSnapshot(collection(db, "usuarios_cadastrados"), (snapshot) => {
@@ -378,7 +391,6 @@
             });
         }
 
-        // Sistema de usuários online em tempo real
         function iniciarPresencaOnline() {
             const presenceRef = doc(db, "usuarios_online", mySessionId);
 
@@ -412,7 +424,6 @@
             });
         }
 
-        // CARREGAMENTO PROGRESSIVO DOS PACKS
         async function autoDiscoverPacks() {
             packsData = [];
             let i = 1;
@@ -507,17 +518,4 @@
             grid.innerHTML = '';
 
             const start = (currentPage - 1) * itemsPerPage;
-            const end = start + itemsPerPage;
-            const paginatedItems = packsData.slice(start, end);
-
-            if (paginatedItems.length === 0) return;
-
-            paginatedItems.forEach(pack => {
-                appendCardToGrid(pack);
-            });
-
-            updatePaginationControls();
-        }
-
-        function updatePaginationControls() {
-        
+            
