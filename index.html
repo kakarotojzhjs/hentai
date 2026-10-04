@@ -84,13 +84,19 @@
             background: rgba(99, 102, 241, 0.1); 
         }
 
-        main { flex: 1; padding: 30px 24px; max-width: 1200px; margin: 0 auto; width: 100%; display: flex; align-items: center; justify-content: center; }
+        main { 
+            flex: 1; 
+            padding: 30px 24px; 
+            max-width: 1200px; 
+            margin: 0 auto; 
+            width: 100%; 
+        }
 
-        /* GRADE FIXA DE EXATAMENTE 3 COLUNAS E 5 LINHAS (3x5) */
+        /* GRADE FIXA DE EXATAMENTE 3 COLUNAS */
         .gallery-grid { 
-            display: grid; 
-            grid-template-columns: repeat(3, 1fr); /* 3 colunas na horizontal 👉 */
-            grid-template-rows: repeat(5, auto);     /* 5 linhas na vertical 👇 */
+            display: grid !important; 
+            grid-template-columns: repeat(3, 1fr) !important; 
+            grid-auto-rows: auto;
             gap: 20px; 
             width: 100%;
         }
@@ -105,6 +111,7 @@
             justify-content: space-between; 
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
+            width: 100%;
         }
         
         .card:hover { 
@@ -113,10 +120,9 @@
             border-color: var(--border-hover); 
         }
 
-        /* AJUSTE PARA PROPORÇÃO 2:3 E ENCAIXE PERFEITO */
         .card-img-wrapper { 
             width: 100%; 
-            aspect-ratio: 2 / 3; /* Força o espaço proporcional fixo em qualquer tela */
+            aspect-ratio: 2 / 3; 
             overflow: hidden; 
             background-color: #0b101b; 
             position: relative;
@@ -125,7 +131,7 @@
         .card img, .card video { 
             width: 100%; 
             height: 100%; 
-            object-fit: cover; /* Encolhe ou estica a imagem/vídeo para preencher exatamente o wrapper sem distorcer */
+            object-fit: cover; 
             display: block;
             transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1); 
         }
@@ -265,8 +271,9 @@
 
         @media (max-width: 768px) {
             header { padding: 14px 20px; }
-            main { padding: 20px 16px; }
-            .gallery-grid { grid-template-columns: repeat(1, 1fr); grid-template-rows: repeat(15, auto); gap: 16px; }
+            main { padding: 20px 10px; }
+            /* Mantém sempre 3 colunas mesmo no celular */
+            .gallery-grid { grid-template-columns: repeat(3, 1fr) !important; gap: 8px; }
         }
     </style>
 </head>
@@ -307,7 +314,7 @@
     <script>
         let packsData = [];
         let currentPage = 1;
-        const itemsPerPage = 15; // 3 colunas x 5 linhas = 15 itens por página
+        const itemsPerPage = 15;
 
         function initAuth() {
             let currentUser = localStorage.getItem('site_current_user');
@@ -384,7 +391,6 @@
                             }
                         }
 
-                        // Coloca sempre os packs mais novos no topo
                         packsData.unshift({ title, image, link });
                         consecutiveFailures = 0;
                     } else {
