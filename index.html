@@ -267,7 +267,8 @@
             <h2>Bem-vindo(a)</h2>
             <p>Insira seu nome de usuário para acessar o painel.</p>
             <input type="text" id="username-input" placeholder="Seu nome..." autocomplete="off">
-            <button class="btn-submit" onclick="handleLogin()">Entrar</button>
+            <!-- Removido o onclick direto para evitar travamento no telemóvel -->
+            <button class="btn-submit" id="btn-entrar">Entrar</button>
         </div>
     </div>
 
@@ -279,7 +280,7 @@
             <div class="counter-badge online">🟢 Online: <span id="online-counter">1</span></div>
             <!-- Badge Cadastrados -->
             <div class="counter-badge">👥 Cadastrados: <span id="user-counter">...</span></div>
-            <button class="btn-change-name" onclick="openLoginModal()">Alterar</button>
+            <button class="btn-change-name" id="btn-alterar">Alterar</button>
         </div>
     </header>
 
@@ -297,7 +298,7 @@
         </div>
     </footer>
 
-    <!-- Script com Firebase e Contador de Presença Online -->
+    <!-- Script com Firebase e Ligação Segura de Botões -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
         import { getFirestore, collection, doc, getDoc, setDoc, deleteDoc, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
@@ -320,7 +321,7 @@
         const itemsPerPage = 15;
         let mySessionId = 'user_' + Math.random().toString(36).substring(2, 9);
 
-        window.initAuth = async function() {
+        async function initAuth() {
             let currentUser = localStorage.getItem('site_current_user');
             if (!currentUser) {
                 document.getElementById('login-modal').style.display = 'flex';
@@ -334,7 +335,7 @@
             autoDiscoverPacks();
         }
 
-        window.handleLogin = async function() {
+        async function handleLogin() {
             const input = document.getElementById('username-input').value.trim();
             if (!input) {
                 alert('Digite um nome válido.');
@@ -359,10 +360,17 @@
             }
         }
 
-        window.openLoginModal = function() {
+        function openLoginModal() {
             document.getElementById('username-input').value = localStorage.getItem('site_current_user') || '';
             document.getElementById('login-modal').style.display = 'flex';
         }
+
+        // Ligação segura dos botões via JavaScript (resolve o problema do telemóvel)
+        document.getElementById('btn-entrar').addEventListener('click', handleLogin);
+        document.getElementById('username-input').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') handleLogin();
+        });
+        document.getElementById('btn-alterar').addEventListener('click', openLoginModal);
 
         function escutarContadorGlobal() {
             onSnapshot(collection(db, "usuarios_cadastrados"), (snapshot) => {
@@ -374,20 +382,16 @@
         function iniciarPresencaOnline() {
             const presenceRef = doc(db, "usuarios_online", mySessionId);
 
-            // Regista que está online
             setDoc(presenceRef, { ultimaVez: serverTimestamp() }).catch(e => {});
 
-            // Atualiza o sinal de vida a cada 15 segundos
             setInterval(() => {
                 setDoc(presenceRef, { ultimaVez: serverTimestamp() }, { merge: true }).catch(e => {});
             }, 15000);
 
-            // Remove o usuário online se fechar a aba ou sair
             window.addEventListener('beforeunload', () => {
                 deleteDoc(presenceRef).catch(e => {});
             });
 
-            // Escuta quantos estão com o site aberto
             onSnapshot(collection(db, "usuarios_online"), (snapshot) => {
                 let onlineCount = 0;
                 const agora = new Date().getTime();
@@ -396,7 +400,6 @@
                     const data = docSnap.data();
                     if (data.ultimaVez) {
                         const timestampOnline = data.ultimaVez.toMillis ? data.ultimaVez.toMillis() : agora;
-                        // Considera online se enviou sinal nos últimos 45 segundos
                         if (agora - timestampOnline < 45000) {
                             onlineCount++;
                         }
@@ -517,5 +520,4 @@
         }
 
         function updatePaginationControls() {
-            const totalPages = Math.ceil(packsData.length / itemsPerPage) || 1;
-            document.getElementById('page-info').innerText = `Página ${curren
+        
