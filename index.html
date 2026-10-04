@@ -3,90 +3,370 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Galeria GitHub</title>
+    <title>Galeria Moderna - GitHub Pages</title>
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: Arial, sans-serif; }
-        body { background-color: #121212; color: #ffffff; display: flex; flex-direction: column; min-height: 100vh; }
+        :root {
+            --bg-main: #0f172a;
+            --bg-surface: #1e293b;
+            --bg-card: #1e293b;
+            --border-color: #334155;
+            --accent-color: #6366f1;
+            --accent-hover: #4f46e5;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --success-color: #10b981;
+        }
+
+        * { 
+            box-sizing: border-box; 
+            margin: 0; 
+            padding: 0; 
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; 
+        }
+
+        body { 
+            background-color: var(--bg-main); 
+            color: var(--text-main); 
+            display: flex; 
+            flex-direction: column; 
+            min-height: 100vh; 
+        }
         
-        header { background-color: #1f1f1f; padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #333; }
-        .logo { font-size: 20px; font-weight: bold; color: #ff4757; }
-        .menu-options { display: flex; gap: 20px; align-items: center; }
-        .menu-options span, .menu-options a { color: #ccc; text-decoration: none; cursor: pointer; font-size: 14px; }
-        .menu-options a:hover { color: #fff; }
-        .counter-badge { background-color: #333; padding: 5px 10px; border-radius: 12px; font-size: 13px; color: #4cd137; }
+        /* Menu Superior Moderno */
+        header { 
+            background-color: rgba(30, 41, 59, 0.85);
+            backdrop-filter: blur(12px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            padding: 16px 32px; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            border-bottom: 1px solid var(--border-color); 
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
 
-        main { flex: 1; padding: 30px; max-width: 1200px; margin: 0 auto; width: 100%; }
+        .logo { 
+            font-size: 22px; 
+            font-weight: 800; 
+            background: linear-gradient(135deg, #818cf8, #c084fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 0.5px;
+        }
 
-        /* Grade 3x5 (3 colunas, preenchendo até 15 itens por página) */
-        .gallery-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
-        .card { background-color: #1e1e1e; border-radius: 8px; overflow: hidden; border: 1px solid #333; display: flex; flex-direction: column; justify-content: space-between; }
-        .card img { width: 100%; height: 180px; object-fit: cover; }
-        .card-content { padding: 15px; }
-        .card-title { font-size: 16px; margin-bottom: 10px; font-weight: bold; word-break: break-word; }
-        .card-btn { display: block; width: 100%; padding: 10px; background-color: #ff4757; color: white; text-align: center; text-decoration: none; border-radius: 4px; font-weight: bold; transition: background 0.2s; }
-        .card-btn:hover { background-color: #ff6b81; }
+        .menu-options { 
+            display: flex; 
+            gap: 24px; 
+            align-items: center; 
+        }
 
-        footer { background-color: #1f1f1f; padding: 20px; display: flex; flex-direction: column; align-items: center; gap: 10px; border-top: 1px solid #333; }
-        .pagination { display: flex; gap: 10px; align-items: center; }
-        .page-btn { padding: 8px 16px; background-color: #333; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; }
-        .page-btn:disabled { opacity: 0.4; cursor: not-allowed; }
-        .page-btn:hover:not(:disabled) { background-color: #444; }
-        .page-info { font-size: 14px; color: #aaa; }
+        .user-info {
+            color: var(--text-muted);
+            font-size: 14px;
+        }
 
-        #login-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); display: flex; justify-content: center; align-items: center; z-index: 1000; }
-        .modal-content { background: #1e1e1e; padding: 30px; border-radius: 8px; width: 320px; border: 1px solid #333; text-align: center; }
-        .modal-content h2 { margin-bottom: 15px; font-size: 20px; }
-        .modal-content input { width: 100%; padding: 10px; margin-bottom: 15px; background: #2c2c2c; border: 1px solid #444; color: white; border-radius: 4px; }
-        .modal-content button { width: 100%; padding: 10px; background: #2ed573; color: white; border: none; font-weight: bold; border-radius: 4px; cursor: pointer; }
-        .modal-content button:hover { background: #26af5f; }
+        .user-info strong {
+            color: var(--text-main);
+        }
 
-        @media (max-width: 768px) { .gallery-grid { grid-template-columns: 1fr; } }
+        .counter-badge { 
+            background-color: rgba(16, 185, 129, 0.15); 
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            padding: 6px 12px; 
+            border-radius: 20px; 
+            font-size: 13px; 
+            font-weight: 600;
+            color: var(--success-color); 
+        }
+
+        .btn-change-name {
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-muted);
+            padding: 6px 14px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.2s ease;
+        }
+
+        .btn-change-name:hover {
+            border-color: var(--accent-color);
+            color: var(--text-main);
+            background: rgba(99, 102, 241, 0.1);
+        }
+
+        /* Conteúdo Principal */
+        main { 
+            flex: 1; 
+            padding: 40px 20px; 
+            max-width: 1300px; 
+            margin: 0 auto; 
+            width: 100%; 
+        }
+
+        /* Grade 3x5 */
+        .gallery-grid { 
+            display: grid; 
+            grid-template-columns: repeat(3, 1fr); 
+            gap: 24px; 
+        }
+
+        .card { 
+            background-color: var(--bg-card); 
+            border-radius: 12px; 
+            overflow: hidden; 
+            border: 1px solid var(--border-color); 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: space-between; 
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
+        }
+
+        .card:hover { 
+            transform: translateY(-4px); 
+            box-shadow: 0 12px 20px -3px rgba(0, 0, 0, 0.4);
+            border-color: var(--accent-color);
+        }
+
+        .card-img-wrapper {
+            width: 100%;
+            height: 190px;
+            overflow: hidden;
+            background-color: #0f172a;
+        }
+
+        .card img { 
+            width: 100%; 
+            height: 100%; 
+            object-fit: cover; 
+            transition: transform 0.5s ease;
+        }
+
+        .card:hover img {
+            transform: scale(1.05);
+        }
+
+        .card-content { 
+            padding: 18px; 
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            flex: 1;
+            justify-content: space-between;
+        }
+
+        .card-title { 
+            font-size: 15px; 
+            font-weight: 600; 
+            color: var(--text-main);
+            line-height: 1.4;
+            word-break: break-word; 
+        }
+
+        .card-btn { 
+            display: block; 
+            width: 100%; 
+            padding: 10px; 
+            background-color: var(--accent-color); 
+            color: white; 
+            text-align: center; 
+            text-decoration: none; 
+            border-radius: 8px; 
+            font-weight: 600; 
+            font-size: 14px;
+            transition: background-color 0.2s ease, transform 0.1s ease; 
+        }
+
+        .card-btn:hover { 
+            background-color: var(--accent-hover); 
+        }
+
+        .card-btn:active {
+            transform: scale(0.98);
+        }
+
+        /* Rodapé com Paginação */
+        footer { 
+            background-color: rgba(30, 41, 59, 0.85);
+            backdrop-filter: blur(12px);
+            padding: 24px; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            gap: 12px; 
+            border-top: 1px solid var(--border-color); 
+        }
+
+        .pagination { 
+            display: flex; 
+            gap: 16px; 
+            align-items: center; 
+        }
+
+        .page-btn { 
+            padding: 10px 20px; 
+            background-color: var(--bg-surface); 
+            color: var(--text-main); 
+            border: 1px solid var(--border-color); 
+            border-radius: 8px; 
+            cursor: pointer; 
+            font-weight: 600; 
+            font-size: 14px;
+            transition: all 0.2s ease;
+        }
+
+        .page-btn:disabled { 
+            opacity: 0.3; 
+            cursor: not-allowed; 
+        }
+
+        .page-btn:hover:not(:disabled) { 
+            background-color: var(--accent-color); 
+            border-color: var(--accent-color);
+        }
+
+        .page-info { 
+            font-size: 14px; 
+            color: var(--text-muted); 
+            font-weight: 500;
+        }
+
+        /* Modal de Login Elegante */
+        #login-modal { 
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+            background: rgba(15, 23, 42, 0.8); 
+            backdrop-filter: blur(8px);
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            z-index: 1000; 
+            padding: 20px;
+        }
+
+        .modal-content { 
+            background: var(--bg-surface); 
+            padding: 36px; 
+            border-radius: 16px; 
+            width: 100%;
+            max-width: 380px; 
+            border: 1px solid var(--border-color); 
+            text-align: center; 
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-content h2 { 
+            margin-bottom: 10px; 
+            font-size: 22px; 
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .modal-content p {
+            font-size: 13px; 
+            color: var(--text-muted); 
+            margin-bottom: 24px; 
+            line-height: 1.5;
+        }
+
+        .modal-content input { 
+            width: 100%; 
+            padding: 12px 16px; 
+            margin-bottom: 20px; 
+            background: #0f172a; 
+            border: 1px solid var(--border-color); 
+            color: white; 
+            border-radius: 8px; 
+            font-size: 15px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .modal-content input:focus {
+            border-color: var(--accent-color);
+        }
+
+        .modal-content button.btn-submit { 
+            width: 100%; 
+            padding: 12px; 
+            background: var(--accent-color); 
+            color: white; 
+            border: none; 
+            font-weight: 600; 
+            font-size: 15px;
+            border-radius: 8px; 
+            cursor: pointer; 
+            transition: background 0.2s; 
+        }
+
+        .modal-content button.btn-submit:hover { 
+            background: var(--accent-hover); 
+        }
+
+        /* Responsividade para Celulares */
+        @media (max-width: 900px) {
+            .gallery-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 600px) {
+            header { padding: 12px 16px; }
+            .logo { font-size: 18px; }
+            .menu-options { gap: 10px; }
+            .gallery-grid { grid-template-columns: 1fr; }
+            .modal-content { padding: 24px; }
+        }
     </style>
 </head>
 <body>
 
-    <!-- Modal de Login (com substituição de nome para evitar múltiplas contas) -->
+    <!-- Modal de Login / Registro (com substituição automática de nome) -->
     <div id="login-modal">
         <div class="modal-content">
-            <h2>Entrar / Registrar</h2>
-            <p style="font-size: 12px; color: #aaa; margin-bottom: 15px;">Digite seu nome de usuário. Caso já tenha uma conta, seu nome anterior será substituído.</p>
-            <input type="text" id="username-input" placeholder="Nome de usuário..." autocomplete="off">
-            <button onclick="handleLogin()">Salvar e Entrar</button>
+            <h2>Bem-vindo(a)</h2>
+            <p>Digite seu nome de usuário para continuar. Caso já tenha usado outro nome neste navegador, ele será atualizado automaticamente.</p>
+            <input type="text" id="username-input" placeholder="Seu nome de usuário..." autocomplete="off">
+            <button class="btn-submit" onclick="handleLogin()">Entrar na Galeria</button>
         </div>
     </div>
 
     <!-- Menu Superior -->
     <header>
-        <div class="logo">Minha Galeria</div>
+        <div class="logo">⚡ Minha Galeria</div>
         <div class="menu-options">
-            <span>Usuário: <strong id="current-user-display">-</strong></span>
-            <div class="counter-badge">Usuários Totais: <span id="user-counter">1</span></div>
-            <a href="#" onclick="openLoginModal()">Alterar Nome</a>
+            <span class="user-info">Usuário: <strong id="current-user-display">-</strong></span>
+            <div class="counter-badge">Usuários: <span id="user-counter">1</span></div>
+            <button class="btn-change-name" onclick="openLoginModal()">Alterar Nome</button>
         </div>
     </header>
 
     <!-- Conteúdo Principal -->
     <main>
         <div class="gallery-grid" id="gallery-grid">
-            <p style="grid-column: span 3; text-align: center; color: #aaa;">Carregando packs do GitHub...</p>
+            <p style="grid-column: span 3; text-align: center; color: var(--text-muted); padding: 40px;">Carregando packs do GitHub...</p>
         </div>
     </main>
 
     <!-- Rodapé com Paginação -->
     <footer>
         <div class="pagination">
-            <button class="page-btn" id="prev-btn" onclick="changePage(-1)" disabled>Voltar</button>
+            <button class="page-btn" id="prev-btn" onclick="changePage(-1)" disabled>← Voltar</button>
             <span class="page-info" id="page-info">Página 1 de 1</span>
-            <button class="page-btn" id="next-btn" onclick="changePage(1)" disabled>Avançar</button>
+            <button class="page-btn" id="next-btn" onclick="changePage(1)" disabled>Avançar →</button>
         </div>
     </footer>
 
     <script>
         let packsData = [];
         let currentPage = 1;
-        const itemsPerPage = 15; // Grade de 3x5
+        const itemsPerPage = 15; // Grade de 3x5 por página
 
-        // Sistema de Usuário e Login (Substitui o nome anterior para evitar contas múltiplas)
+        // Sistema de Autenticação e Controle de Nome Único
         function initAuth() {
             let currentUser = localStorage.getItem('site_current_user');
             if (!currentUser) {
@@ -101,10 +381,10 @@
         function handleLogin() {
             const input = document.getElementById('username-input').value.trim();
             if (!input) {
-                alert('Digite um nome válido.');
+                alert('Por favor, digite um nome de usuário válido.');
                 return;
             }
-            // Substitui o nome anterior garantindo unicidade por navegador
+            // Substitui o nome anterior garantindo o registro único atualizado
             localStorage.setItem('site_current_user', input);
             document.getElementById('login-modal').style.display = 'none';
             document.getElementById('current-user-display').innerText = input;
@@ -125,10 +405,10 @@
             document.getElementById('user-counter').innerText = total;
         }
 
-        // Leitura Automática das Pastas direto do GitHub
+        // Leitura Automática das Pastas do GitHub (Já configurado com seu usuário e repositório)
         async function loadPacksFromGitHub() {
-            const repoOwner = "SEU_USUARIO_GITHUB"; // Coloque seu usuário do GitHub aqui
-            const repoName = "NOME_DO_REPOSITORIO";  // Coloque o nome do repositório aqui
+            const repoOwner = "kakarotozhjs"; 
+            const repoName = "hentai";  
             const apiUrl = `https://api.github.com/repos/${repoOwner}/${repoName}/contents/pack`;
 
             try {
@@ -143,7 +423,6 @@
                         const folderName = folder.name;
                         const basePath = `pack/${folderName}`;
 
-                        // Busca o conteúdo de info.txt e link.txt dentro de cada subpasta
                         let title = folderName;
                         let link = "#";
 
@@ -157,7 +436,6 @@
                             if (linkRes.ok) link = (await linkRes.text()).trim();
                         } catch (e) {}
 
-                        // Define a imagem de capa (suporta capa.jpg, capa.png, etc)
                         const image = `${basePath}/capa.jpg`;
 
                         packsData.push({ title, image, link });
@@ -167,11 +445,16 @@
                 renderGallery();
             } catch (error) {
                 console.error(error);
-                document.getElementById('gallery-grid').innerHTML = '<p style="grid-column: span 3; text-align: center; color: #ff4757;">Erro ao carregar packs. Verifique se o repositório é público e se alterou seu nome de usuário e repositório no código.</p>';
+                document.getElementById('gallery-grid').innerHTML = `
+                    <div style="grid-column: span 3; text-align: center; padding: 40px; background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.2); border-radius: 12px;">
+                        <p style="color: #f87171; font-weight: 600; margin-bottom: 8px;">Ainda não foi encontrada a pasta "pack" ou há um erro de carregamento.</p>
+                        <p style="color: var(--text-muted); font-size: 14px;">Certifique-se de que criou uma pasta chamada <b>pack</b> no repositório <b>hentai</b> com as subpastas dentro.</p>
+                    </div>
+                `;
             }
         }
 
-        // Renderização da Grade 3x5 e Paginação
+        // Renderização da Grade e Paginação
         function renderGallery() {
             const grid = document.getElementById('gallery-grid');
             grid.innerHTML = '';
@@ -181,7 +464,7 @@
             const paginatedItems = packsData.slice(start, end);
 
             if (paginatedItems.length === 0) {
-                grid.innerHTML = '<p style="grid-column: span 3; text-align: center; color: #777;">Nenhum pack encontrado.</p>';
+                grid.innerHTML = '<p style="grid-column: span 3; text-align: center; color: var(--text-muted); padding: 40px;">Nenhum pack encontrado dentro da pasta pack.</p>';
                 return;
             }
 
@@ -189,7 +472,9 @@
                 const card = document.createElement('div');
                 card.className = 'card';
                 card.innerHTML = `
-                    <img src="${pack.image}" alt="${pack.title}" onerror="this.src='https://via.placeholder.com/300x180?text=Sem+Capa'">
+                    <div class="card-img-wrapper">
+                        <img src="${pack.image}" alt="${pack.title}" onerror="this.src='https://via.placeholder.com/300x190?text=Sem+Capa'">
+                    </div>
                     <div class="card-content">
                         <div class="card-title">${pack.title}</div>
                         <a href="${pack.link}" target="_blank" class="card-btn">Abrir Link</a>
