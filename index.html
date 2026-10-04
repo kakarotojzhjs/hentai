@@ -118,14 +118,14 @@
             position: relative;
         }
 
-        .card img { 
+        .card img, .card video { 
             width: 100%; 
             height: 100%; 
             object-fit: cover; 
             transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1); 
         }
 
-        .card:hover img { transform: scale(1.06); }
+        .card:hover img, .card:hover video { transform: scale(1.06); }
 
         .card-content { 
             padding: 20px; 
@@ -341,7 +341,7 @@
             document.getElementById('user-counter').innerText = total;
         }
 
-        // Descobre automaticamente as pastas numéricas (1, 2, 3...) e formatos de fotos (.webm, .jpg, .png, etc.)
+        // Descobre automaticamente pastas e testa várias extensões (webm, jpg, png, etc.)
         async function autoDiscoverPacks() {
             packsData = [];
             let i = 1;
@@ -360,7 +360,7 @@
                             if (linkRes.ok) link = (await linkRes.text()).trim();
                         } catch (e) {}
 
-                        // Suporte a fotos em .webm, .webp, .jpg, .png e variações
+                        // Testa várias extensões possíveis para a capa automaticamente
                         let image = `${folder}/capa.jpg`;
                         const mediaExtensions = ['webm', 'webp', 'jpg', 'png', 'jpeg', 'WEBM', 'WEBP', 'JPG', 'PNG'];
                         
@@ -386,6 +386,17 @@
             renderGallery();
         }
 
+        // Renderiza a mídia correta dependendo se é webm ou imagem
+        function getMediaElement(imagePath, title) {
+            const ext = imagePath.split('.').pop().toLowerCase();
+            
+            if (ext === 'webm' || ext === 'mp4') {
+                return `<video src="${imagePath}" autoplay muted loop playsinline></video>`;
+            } else {
+                return `<img src="${imagePath}" alt="${title}" onerror="this.src='https://via.placeholder.com/300x220?text=Sem+Capa'">`;
+            }
+        }
+
         function renderGallery() {
             const grid = document.getElementById('gallery-grid');
             grid.innerHTML = '';
@@ -399,8 +410,8 @@
                     <div style="grid-column: 1 / -1; text-align: center; padding: 50px 20px; background: var(--bg-card); border: 1px dashed var(--border-subtle); border-radius: 16px;">
                         <p style="color: #818cf8; font-weight: 600; margin-bottom: 8px; font-size: 15px;">Nenhum pack encontrado ainda!</p>
                         <p style="color: var(--text-muted); font-size: 13px; line-height: 1.6;">
-                            Basta colocar as pastas numeradas no GitHub (ex: <b>pack/1/</b>, <b>pack/2/</b>)<br>
-                            contendo <b>info.txt</b>, <b>link.txt</b> e a capa (ex: <b>capa.webm</b> ou <b>capa.jpg</b>).
+                            Certifique-se de que cada pasta tem <b>info.txt</b>, <b>link.txt</b> e a capa<br>
+                            (pode ser <b>capa.jpg</b>, <b>capa.png</b>, <b>capa.webm</b>, etc.).
                         </p>
                     </div>
                 `;
@@ -412,7 +423,7 @@
                 card.className = 'card';
                 card.innerHTML = `
                     <div class="card-img-wrapper">
-                        <img src="${pack.image}" alt="${pack.title}" onerror="this.src='https://via.placeholder.com/300x220?text=Sem+Capa'">
+                        ${getMediaElement(pack.image, pack.title)}
                     </div>
                     <div class="card-content">
                         <div class="card-title">${pack.title}</div>
