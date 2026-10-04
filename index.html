@@ -3,304 +3,67 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Minha Galeria</title>
+    <title>Teste de Login - Firebase</title>
     <style>
-        :root {
-            --bg-base: #090d16;
-            --bg-card: #131b2e;
-            --border-subtle: rgba(255, 255, 255, 0.08);
-            --border-hover: rgba(99, 102, 241, 0.5);
-            --primary: #6366f1;
-            --primary-hover: #4f46e5;
-            --text-main: #f1f5f9;
-            --text-muted: #94a3b8;
-            --accent-glow: rgba(99, 102, 241, 0.25);
-        }
-
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', system-ui, -apple-system, sans-serif; }
-        
-        body { 
-            background-color: var(--bg-base); 
-            color: var(--text-main); 
-            display: flex; 
-            flex-direction: column; 
-            min-height: 100vh;
-            background-image: 
-                radial-gradient(circle at 10% 20%, rgba(99, 102, 241, 0.08) 0%, transparent 40%),
-                radial-gradient(circle at 90% 80%, rgba(168, 85, 247, 0.06) 0%, transparent 40%);
-            background-attachment: fixed;
-        }
-        
-        header { 
-            background: rgba(9, 13, 22, 0.75); 
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            position: sticky; 
-            top: 0; 
-            z-index: 100; 
-            padding: 18px 32px; 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            border-bottom: 1px solid var(--border-subtle);
-            flex-wrap: wrap;
-            gap: 15px;
-        }
-
-        .logo { 
-            font-size: 20px; 
-            font-weight: 800; 
-            letter-spacing: -0.5px;
-            background: linear-gradient(135deg, #818cf8, #e879f9); 
-            -webkit-background-clip: text; 
-            -webkit-text-fill-color: transparent; 
-        }
-
-        .menu-options { display: flex; gap: 15px; align-items: center; flex-wrap: wrap; }
-        .user-info { color: var(--text-muted); font-size: 13px; }
-        .user-info strong { color: var(--text-main); font-weight: 600; }
-        
-        .counter-badge { 
-            background: rgba(16, 185, 129, 0.1); 
-            border: 1px solid rgba(16, 185, 129, 0.25); 
-            padding: 5px 12px; 
-            border-radius: 30px; 
-            font-size: 12px; 
-            font-weight: 600; 
-            color: #34d399; 
-        }
-
-        .counter-badge.online {
-            background: rgba(99, 102, 241, 0.1);
-            border: 1px solid rgba(99, 102, 241, 0.25);
-            color: #818cf8;
-        }
-
-        .btn-change-name { 
-            background: rgba(255, 255, 255, 0.03); 
-            border: 1px solid var(--border-subtle); 
-            color: var(--text-muted); 
-            padding: 6px 14px; 
-            border-radius: 8px; 
-            cursor: pointer; 
-            font-size: 13px; 
-            transition: all 0.2s ease; 
-        }
-        .btn-change-name:hover { 
-            border-color: var(--primary); 
-            color: var(--text-main); 
-            background: rgba(99, 102, 241, 0.1); 
-        }
-
-        main { 
-            flex: 1; 
-            padding: 30px 24px; 
-            max-width: 1200px; 
-            margin: 0 auto; 
-            width: 100%; 
-        }
-
-        .gallery-grid { 
-            display: grid !important; 
-            grid-template-columns: repeat(3, 1fr) !important; 
-            grid-auto-rows: auto;
-            gap: 20px; 
-            width: 100%;
-        }
-
-        .card { 
-            background-color: var(--bg-card); 
-            border-radius: 16px; 
-            overflow: hidden; 
-            border: 1px solid var(--border-subtle); 
-            display: flex; 
-            flex-direction: column; 
-            justify-content: space-between; 
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
-            width: 100%;
-            animation: cardAppear 0.5s ease forwards;
-            opacity: 0;
-            transform: translateY(15px);
-        }
-
-        @keyframes cardAppear {
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        .card:hover { 
-            transform: translateY(-6px); 
-            box-shadow: 0 20px 30px -10px var(--accent-glow); 
-            border-color: var(--border-hover); 
-        }
-
-        .card-img-wrapper { 
-            width: 100%; 
-            aspect-ratio: 2 / 3; 
-            overflow: hidden; 
-            background-color: #0b101b; 
-            position: relative;
-        }
-
-        .card img, .card video { 
-            width: 100%; 
-            height: 100%; 
-            object-fit: cover; 
-            display: block;
-            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1); 
-        }
-
-        .card:hover img, .card:hover video { transform: scale(1.06); }
-
-        .card-content { 
-            padding: 16px; 
-            display: flex; 
-            flex-direction: column; 
-            gap: 12px; 
-            flex: 1; 
-            justify-content: space-between; 
-        }
-
-        .card-title { 
-            font-size: 14px; 
-            font-weight: 600; 
-            color: var(--text-main); 
-            line-height: 1.4; 
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-        }
-
-        .card-btn { 
+        body {
+            background-color: #090d16;
+            color: #f1f5f9;
+            font-family: sans-serif;
             display: flex;
-            align-items: center;
             justify-content: center;
-            width: 100%; 
-            padding: 10px; 
-            background: linear-gradient(135deg, var(--primary), #818cf8); 
-            color: white; 
-            text-align: center; 
-            text-decoration: none; 
-            border-radius: 10px; 
-            font-weight: 600; 
-            font-size: 13px; 
-            letter-spacing: 0.3px;
-            transition: opacity 0.2s, transform 0.1s; 
-            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+            align-items: center;
+            height: 100vh;
+            margin: 0;
         }
-
-        .card-btn:hover { opacity: 0.92; }
-        .card-btn:active { transform: scale(0.98); }
-
-        footer { 
-            background: rgba(9, 13, 22, 0.75); 
-            backdrop-filter: blur(16px);
-            padding: 24px; 
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-            gap: 12px; 
-            border-top: 1px solid var(--border-subtle); 
+        .box {
+            background: #131b2e;
+            padding: 30px;
+            border-radius: 16px;
+            border: 1px solid rgba(255,255,255,0.08);
+            width: 100%;
+            max-width: 350px;
+            text-align: center;
         }
-
-        .pagination { display: flex; gap: 16px; align-items: center; }
-        
-        .page-btn { 
-            padding: 10px 20px; 
-            background: var(--bg-card); 
-            color: var(--text-main); 
-            border: 1px solid var(--border-subtle); 
-            border-radius: 10px; 
-            cursor: pointer; 
-            font-weight: 600; 
-            font-size: 13px; 
-            transition: all 0.2s; 
+        input {
+            width: 100%;
+            padding: 12px;
+            margin: 15px 0;
+            background: #090d16;
+            border: 1px solid rgba(255,255,255,0.1);
+            color: white;
+            border-radius: 8px;
+            box-sizing: border-box;
         }
-        
-        .page-btn:disabled { opacity: 0.3; cursor: not-allowed; }
-        .page-btn:hover:not(:disabled) { 
-            border-color: var(--primary); 
-            background: rgba(99, 102, 241, 0.1); 
+        button {
+            width: 100%;
+            padding: 12px;
+            background: #6366f1;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
         }
-
-        .page-info { font-size: 13px; color: var(--text-muted); font-weight: 500; }
-
-        #login-modal { 
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            background: rgba(5, 8, 15, 0.85); backdrop-filter: blur(12px); 
-            display: flex; justify-content: center; align-items: center; z-index: 1000; padding: 20px; 
-        }
-
-        .modal-content { 
-            background: var(--bg-card); padding: 36px; border-radius: 20px; 
-            width: 100%; max-width: 400px; border: 1px solid var(--border-subtle); 
-            text-align: center; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7); 
-        }
-
-        .modal-content h2 { margin-bottom: 8px; font-size: 20px; font-weight: 700; color: var(--text-main); }
-        .modal-content p { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; line-height: 1.5; }
-        
-        .modal-content input { 
-            width: 100%; padding: 12px 16px; margin-bottom: 20px; 
-            background: var(--bg-base); border: 1px solid var(--border-subtle); 
-            color: white; border-radius: 10px; font-size: 14px; outline: none; 
-        }
-        .modal-content input:focus { border-color: var(--primary); }
-
-        .modal-content button.btn-submit { 
-            width: 100%; padding: 12px; background: var(--primary); color: white; 
-            border: none; font-weight: 600; font-size: 14px; border-radius: 10px; cursor: pointer; 
-        }
-
-        @media (max-width: 768px) {
-            header { padding: 14px 20px; }
-            main { padding: 20px 10px; }
-            .gallery-grid { grid-template-columns: repeat(3, 1fr) !important; gap: 8px; }
+        #status {
+            margin-top: 15px;
+            font-size: 13px;
+            color: #94a3b8;
         }
     </style>
 </head>
 <body>
 
-    <div id="login-modal">
-        <div class="modal-content">
-            <h2>Bem-vindo(a)</h2>
-            <p>Insira seu nome de usuário para acessar o painel.</p>
-            <input type="text" id="username-input" placeholder="Seu nome..." autocomplete="off">
-            <button class="btn-submit" id="btn-entrar" type="button">Entrar</button>
-        </div>
+    <div class="box">
+        <h2>Teste de Registo</h2>
+        <p style="font-size: 13px; color: #94a3b8;">Insere o teu nome para testar a gravação no Firebase.</p>
+        <input type="text" id="nome-input" placeholder="O teu nome..." autocomplete="off">
+        <button id="btn-testar">Testar Registo</button>
+        <div id="status">Aguardando ação...</div>
     </div>
 
-    <header>
-        <div class="logo">⚡ Galeria</div>
-        <div class="menu-options">
-            <span class="user-info">Usuário: <strong id="current-user-display">-</strong></span>
-            <!-- Badge Online -->
-            <div class="counter-badge online">🟢 Online: <span id="online-counter">1</span></div>
-            <!-- Badge Cadastrados -->
-            <div class="counter-badge">👥 Cadastrados: <span id="user-counter">...</span></div>
-            <button class="btn-change-name" id="btn-alterar" type="button">Alterar</button>
-        </div>
-    </header>
-
-    <main>
-        <div class="gallery-grid" id="gallery-grid">
-            <p id="loading-msg" style="grid-column: 1 / -1; text-align: center; color: var(--text-muted); padding: 40px;">Procurando packs aos poucos...</p>
-        </div>
-    </main>
-
-    <footer>
-        <div class="pagination">
-            <button class="page-btn" id="prev-btn" onclick="changePage(-1)" disabled>← Anterior</button>
-            <span class="page-info" id="page-info">Página 1 de 1</span>
-            <button class="page-btn" id="next-btn" onclick="changePage(1)" disabled>Próxima →</button>
-        </div>
-    </footer>
-
-    <!-- Script com Firebase e Ligação Segura Completa -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
-        import { getFirestore, collection, doc, getDoc, setDoc, deleteDoc, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+        import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyAQcXNaZrStco_gXgbgG4ikWa0AexUC8nc",
@@ -314,208 +77,35 @@
 
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
+        const statusEl = document.getElementById('status');
 
-        let packsData = [];
-        let currentPage = 1;
-        const itemsPerPage = 15;
-        let mySessionId = 'user_' + Math.random().toString(36).substring(2, 9);
-
-        async function initAuth() {
-            let currentUser = localStorage.getItem('site_current_user');
-            if (!currentUser) {
-                document.getElementById('login-modal').style.display = 'flex';
-            } else {
-                document.getElementById('login-modal').style.display = 'none';
-                document.getElementById('current-user-display').innerText = currentUser;
-                await registerUser(currentUser);
-            }
-            escutarContadorGlobal();
-            iniciarPresencaOnline();
-            autoDiscoverPacks();
-        }
-
-        async function handleLogin() {
-            const inputField = document.getElementById('username-input');
-            const input = inputField ? inputField.value.trim() : '';
-            if (!input) {
-                alert('Digite um nome válido.');
+        document.getElementById('btn-testar').addEventListener('click', async () => {
+            const nome = document.getElementById('nome-input').value.trim();
+            if (!nome) {
+                alert('Escreve um nome primeiro!');
                 return;
             }
-            localStorage.setItem('site_current_user', input);
-            document.getElementById('login-modal').style.display = 'none';
-            document.getElementById('current-user-display').innerText = input;
-            
-            await registerUser(input);
-        }
 
-        async function registerUser(username) {
+            statusEl.innerText = "A ligar ao Firebase...";
+            statusEl.style.color = "#818cf8";
+
             try {
-                const userRef = doc(db, "usuarios_cadastrados", username);
-                const docSnap = await getDoc(userRef);
-                if (!docSnap.exists()) {
-                    await setDoc(userRef, { nome: username, data: new Date() });
-                }
-            } catch (e) {
-                console.log("Erro ao salvar usuário:", e);
-            }
-        }
-
-        function openLoginModal() {
-            const inputField = document.getElementById('username-input');
-            if (inputField) {
-                inputField.value = localStorage.getItem('site_current_user') || '';
-            }
-            document.getElementById('login-modal').style.display = 'flex';
-        }
-
-        // Executa apenas quando o HTML estiver totalmente pronto (Garante o funcionamento no telemóvel)
-        document.addEventListener('DOMContentLoaded', () => {
-            const btnEntrar = document.getElementById('btn-entrar');
-            const usernameInput = document.getElementById('username-input');
-            const btnAlterar = document.getElementById('btn-alterar');
-
-            if (btnEntrar) btnEntrar.addEventListener('click', handleLogin);
-            if (usernameInput) {
-                usernameInput.addEventListener('keypress', (e) => {
-                    if (e.key === 'Enter') handleLogin();
+                // Tenta gravar diretamente na coleção 'usuarios_cadastrados'
+                const userRef = doc(db, "usuarios_cadastrados", nome);
+                await setDoc(userRef, { 
+                    nome: nome, 
+                    dataTeste: new Date().toISOString() 
                 });
-            }
-            if (btnAlterar) btnAlterar.addEventListener('click', openLoginModal);
 
-            initAuth();
+                statusEl.innerText = "Sucesso! Utilizador gravado na base de dados.";
+                statusEl.style.color = "#34d399";
+            } catch (error) {
+                console.error("Erro detalhado:", error);
+                statusEl.innerText = "Erro: " + error.message;
+                statusEl.style.color = "#f87171";
+            }
         });
+    </script>
+</body>
+</html>
 
-        function escutarContadorGlobal() {
-            onSnapshot(collection(db, "usuarios_cadastrados"), (snapshot) => {
-                document.getElementById('user-counter').innerText = snapshot.size;
-            });
-        }
-
-        function iniciarPresencaOnline() {
-            const presenceRef = doc(db, "usuarios_online", mySessionId);
-
-            setDoc(presenceRef, { ultimaVez: serverTimestamp() }).catch(e => {});
-
-            setInterval(() => {
-                setDoc(presenceRef, { ultimaVez: serverTimestamp() }, { merge: true }).catch(e => {});
-            }, 15000);
-
-            window.addEventListener('beforeunload', () => {
-                deleteDoc(presenceRef).catch(e => {});
-            });
-
-            onSnapshot(collection(db, "usuarios_online"), (snapshot) => {
-                let onlineCount = 0;
-                const agora = new Date().getTime();
-
-                snapshot.forEach((docSnap) => {
-                    const data = docSnap.data();
-                    if (data.ultimaVez) {
-                        const timestampOnline = data.ultimaVez.toMillis ? data.ultimaVez.toMillis() : agora;
-                        if (agora - timestampOnline < 45000) {
-                            onlineCount++;
-                        }
-                    } else {
-                        onlineCount++;
-                    }
-                });
-
-                document.getElementById('online-counter').innerText = onlineCount > 0 ? onlineCount : 1;
-            });
-        }
-
-        async function autoDiscoverPacks() {
-            packsData = [];
-            let i = 1;
-            let consecutiveFailures = 0;
-            const mediaExtensions = ['webm', 'webp', 'jpg', 'png', 'jpeg', 'WEBM', 'WEBP', 'JPG', 'PNG'];
-
-            while (consecutiveFailures < 3 && i <= 250) {
-                const folder = `pack/${i}`;
-                try {
-                    const infoRes = await fetch(`${folder}/info.txt?` + new Date().getTime());
-                    if (infoRes.ok) {
-                        const title = (await infoRes.text()).trim();
-                        
-                        let link = "#";
-                        try {
-                            const linkRes = await fetch(`${folder}/link.txt`);
-                            if (linkRes.ok) link = (await linkRes.text()).trim();
-                        } catch (e) {}
-
-                        let image = `${folder}/capa.jpg`;
-                        for (let ext of mediaExtensions) {
-                            const imgTest = await fetch(`${folder}/capa.${ext}`, { method: 'HEAD' });
-                            if (imgTest.ok) {
-                                image = `${folder}/capa.${ext}`;
-                                break;
-                            }
-                        }
-
-                        const packObj = { title, image, link };
-                        packsData.unshift(packObj);
-                        
-                        const loadingMsg = document.getElementById('loading-msg');
-                        if (loadingMsg) loadingMsg.remove();
-
-                        const start = (currentPage - 1) * itemsPerPage;
-                        const end = start + itemsPerPage;
-                        if (packsData.length > start && packsData.length <= end) {
-                            appendCardToGrid(packObj);
-                        }
-
-                        updatePaginationControls();
-                        consecutiveFailures = 0;
-                    } else {
-                        consecutiveFailures++;
-                    }
-                } catch (e) {
-                    consecutiveFailures++;
-                }
-                i++;
-            }
-
-            if (packsData.length === 0) {
-                const grid = document.getElementById('gallery-grid');
-                grid.innerHTML = `
-                    <div style="grid-column: 1 / -1; text-align: center; padding: 50px 20px; background: var(--bg-card); border: 1px dashed var(--border-subtle); border-radius: 16px;">
-                        <p style="color: #818cf8; font-weight: 600; margin-bottom: 8px; font-size: 15px;">Nenhum pack encontrado ainda!</p>
-                        <p style="color: var(--text-muted); font-size: 13px; line-height: 1.6;">
-                            Certifique-se de que cada pasta tem <b>info.txt</b>, <b>link.txt</b> e a capa.
-                        </p>
-                    </div>
-                `;
-            }
-        }
-
-        function getMediaElement(imagePath, title) {
-            const ext = imagePath.split('.').pop().toLowerCase();
-            if (ext === 'webm' || ext === 'mp4') {
-                return `<video src="${imagePath}" autoplay muted loop playsinline></video>`;
-            } else {
-                return `<img src="${imagePath}" alt="${title}" onerror="this.src='https://via.placeholder.com/300x450?text=Sem+Capa'">`;
-            }
-        }
-
-        function appendCardToGrid(pack) {
-            const grid = document.getElementById('gallery-grid');
-            const card = document.createElement('div');
-            card.className = 'card';
-            card.innerHTML = `
-                <div class="card-img-wrapper">
-                    ${getMediaElement(pack.image, pack.title)}
-                </div>
-                <div class="card-content">
-                    <div class="card-title">${pack.title}</div>
-                    <a href="${pack.link}" target="_blank" class="card-btn">Acessar Pack</a>
-                </div>
-            `;
-            grid.appendChild(card);
-        }
-
-        window.renderGallery = function() {
-            const grid = document.getElementById('gallery-grid');
-            grid.innerHTML = '';
-
-            const start = (currentPage - 1) * itemsPerPage;
-            
