@@ -519,4 +519,18 @@
             const totalPages = Math.ceil(packsData.length / itemsPerPage) || 1;
             currentPage += direction;
             if (currentPage < 1) currentPage = 1;
-            if (currentPage > totalPages) currentPage 
+            if (currentPage > totalPages) currentPage = totalPages;
+            renderGallery();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function updatePaginationControls() {
+            const totalPages = Math.ceil(packsData.length / itemsPerPage) || 1;
+            document.getElementById('page-info').innerText = `Página ${currentPage} de ${totalPages}`;
+            document.getElementById('prev-btn').disabled = currentPage === 1;
+            document.getElementById('next-btn').disabled = currentPage >= totalPages;
+        }
+    </script>
+</body>
+</html>
+
