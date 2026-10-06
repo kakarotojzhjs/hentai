@@ -1,5 +1,4 @@
-<!DOCTYPE html><html lang="pt-BR">
-<head>
+<!DOCTYPE html><html lang="pt-BR"><head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Minha Galeria</title>
@@ -15,7 +14,7 @@
             --text-muted: #94a3b8;
             --accent-glow: rgba(99, 102, 241, 0.25);
         }    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', system-ui, -apple-system, sans-serif; }
-    
+
     body { 
         background-color: var(--bg-base); 
         color: var(--text-main); 
@@ -27,7 +26,7 @@
             radial-gradient(circle at 90% 80%, rgba(168, 85, 247, 0.06) 0%, transparent 40%);
         background-attachment: fixed;
     }
-    
+
     header { 
         background: rgba(9, 13, 22, 0.75); 
         backdrop-filter: blur(16px);
@@ -56,7 +55,7 @@
     .menu-options { display: flex; gap: 15px; align-items: center; flex-wrap: wrap; }
     .user-info { color: var(--text-muted); font-size: 13px; }
     .user-info strong { color: var(--text-main); font-weight: 600; }
-    
+
     .counter-badge { 
         background: rgba(16, 185, 129, 0.1); 
         border: 1px solid rgba(16, 185, 129, 0.25); 
@@ -83,6 +82,7 @@
         font-size: 13px; 
         transition: all 0.2s ease; 
     }
+
     .btn-change-name:hover { 
         border-color: var(--primary); 
         color: var(--text-main); 
@@ -194,7 +194,7 @@
     @keyframes cardAppear {
         to { opacity: 1; transform: translateY(0); }
     }
-    
+
     .card:hover { 
         transform: translateY(-6px); 
         box-shadow: 0 20px 30px -10px var(--accent-glow); 
@@ -272,7 +272,7 @@
     }
 
     .pagination { display: flex; gap: 16px; align-items: center; }
-    
+
     .page-btn { 
         padding: 10px 20px; 
         background: var(--bg-card); 
@@ -284,8 +284,9 @@
         font-size: 13px; 
         transition: all 0.2s; 
     }
-    
+
     .page-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+
     .page-btn:hover:not(:disabled) { 
         border-color: var(--primary); 
         background: rgba(99, 102, 241, 0.1); 
@@ -307,12 +308,13 @@
 
     .modal-content h2 { margin-bottom: 8px; font-size: 20px; font-weight: 700; color: var(--text-main); }
     .modal-content p { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; line-height: 1.5; }
-    
+
     .modal-content input { 
         width: 100%; padding: 12px 16px; margin-bottom: 20px; 
         background: var(--bg-base); border: 1px solid var(--border-subtle); 
         color: white; border-radius: 10px; font-size: 14px; outline: none; 
     }
+
     .modal-content input:focus { border-color: var(--primary); }
 
     .modal-content button.btn-submit { 
@@ -331,57 +333,94 @@
     }
 </style>
 
-</head>
-<body onload="initAuth()"><div id="login-modal">
+</head><body onload="initAuth()"><div id="login-modal">
     <div class="modal-content">
         <h2>Bem-vindo(a)</h2>
         <p>Insira seu nome de usuário para acessar o painel.</p>
         <input type="text" id="username-input" placeholder="Seu nome..." autocomplete="off">
         <button class="btn-submit" onclick="handleLogin()">Entrar</button>
     </div>
+</div><header>
+    <div class="logo">⚡ Galeria</div><div class="menu-options">
+    <span class="user-info">
+        Usuário: <strong id="current-user-display">-</strong>
+    </span>
+
+    <div class="counter-badge online">
+        🟢 Online: <span id="online-counter">1</span>
+    </div>
+
+    <div class="counter-badge">
+        👥 Cadastrados: <span id="user-counter">...</span>
+    </div>
+
+    <button class="btn-change-name" onclick="openLoginModal()">Alterar</button>
 </div>
 
-<header>
-    <div class="logo">⚡ Galeria</div>
-    <div class="menu-options">
-        <span class="user-info">Usuário: <strong id="current-user-display">-</strong></span>
-        <div class="counter-badge online">🟢 Online: <span id="online-counter">1</span></div>
-        <div class="counter-badge">👥 Cadastrados: <span id="user-counter">...</span></div>
-        <button class="btn-change-name" onclick="openLoginModal()">Alterar</button>
-    </div>
-</header>
+</header><div class="notice-container">
+    <div class="notice-card">    <div class="notice-text">
+        <div class="notice-title">⚠️ Aviso Importante</div>
 
-<div class="notice-container">
-    <div class="notice-card">
-        <div class="notice-text">
-            <div class="notice-title">⚠️ Aviso Importante</div>
-            <div class="notice-desc">
-                A senha para ter acesso aos packs e conteúdos é: <strong style="color: #ff3333;">hentai</strong> (ou verifique o canal oficial).
-            </div>
+        <div class="notice-desc">
+            A senha para ter acesso aos packs e conteúdos é:
+            <strong style="color: #ff3333;">hentai</strong>
+            (ou verifique o canal oficial).
         </div>
-        <a href="https://t.me/+-_SV0c4vFbpmOTcx" target="_blank" class="telegram-btn">
-            📢 Canal Oficial (Novidades)
-        </a>
     </div>
+
+    <a href="https://t.me/+-_SV0c4vFbpmOTcx"
+       target="_blank"
+       class="telegram-btn">
+        📢 Canal Oficial (Novidades)
+    </a>
+
 </div>
 
-<main>
+</div><main>
     <div class="gallery-grid" id="gallery-grid">
-        <p id="loading-msg" style="grid-column: 1 / -1; text-align: center; color: var(--text-muted); padding: 40px;">Procurando packs aos poucos...</p>
+        <p id="loading-msg"
+           style="grid-column: 1 / -1; text-align: center; color: var(--text-muted); padding: 40px;">
+            Procurando packs aos poucos...
+        </p>
     </div>
-</main>
+</main><footer>
+    <div class="pagination">    <button class="page-btn"
+            id="prev-btn"
+            onclick="changePage(-1)"
+            disabled>
+        ← Anterior
+    </button>
 
-<footer>
-    <div class="pagination">
-        <button class="page-btn" id="prev-btn" onclick="changePage(-1)" disabled>← Anterior</button>
-        <span class="page-info" id="page-info">Página 1 de 1</span>
-        <button class="page-btn" id="next-btn" onclick="changePage(1)" disabled>Próxima →</button>
-    </div>
-</footer>
+    <span class="page-info" id="page-info">
+        Página 1 de 1
+    </span>
 
-<script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
-    import { getFirestore, collection, doc, getDoc, setDoc, deleteDoc, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+    <button class="page-btn"
+            id="next-btn"
+            onclick="changePage(1)"
+            disabled>
+        Próxima →
+    </button>
+
+</div>
+
+</footer><script type="module">
+
+    import {
+        initializeApp
+    } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
+
+    import {
+        getFirestore,
+        collection,
+        doc,
+        getDoc,
+        setDoc,
+        deleteDoc,
+        onSnapshot,
+        serverTimestamp
+    } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+
 
     const firebaseConfig = {
         apiKey: "AIzaSyAQcXNaZrStco_gXgbgG4ikWa0AexUC8nc",
@@ -393,249 +432,757 @@
         measurementId: "G-VRTT13YEZE"
     };
 
+
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
+
     let packsData = [];
     let currentPage = 1;
+
     const itemsPerPage = 15;
-    let mySessionId = 'user_' + Math.random().toString(36).substring(2, 9);
+
+    let mySessionId =
+        'user_' +
+        Math.random()
+            .toString(36)
+            .substring(2, 9);
+
 
     window.initAuth = async function() {
-        let currentUser = localStorage.getItem('site_current_user');
+
+        let currentUser =
+            localStorage.getItem('site_current_user');
+
+
         if (!currentUser) {
-            document.getElementById('login-modal').style.display = 'flex';
+
+            document.getElementById('login-modal')
+                .style.display = 'flex';
+
         } else {
-            document.getElementById('login-modal').style.display = 'none';
-            document.getElementById('current-user-display').innerText = currentUser;
+
+            document.getElementById('login-modal')
+                .style.display = 'none';
+
+            document.getElementById('current-user-display')
+                .innerText = currentUser;
+
             await registerUser(currentUser);
         }
+
+
         escutarContadorGlobal();
         iniciarPresencaOnline();
+
         autoDiscoverPacks();
-    }
+    };
+
 
     window.handleLogin = async function() {
-        const input = document.getElementById('username-input').value.trim();
+
+        const input =
+            document.getElementById('username-input')
+                .value
+                .trim();
+
+
         if (!input) {
+
             alert('Digite um nome válido.');
+
             return;
         }
-        localStorage.setItem('site_current_user', input);
-        document.getElementById('login-modal').style.display = 'none';
-        document.getElementById('current-user-display').innerText = input;
-        
+
+
+        localStorage.setItem(
+            'site_current_user',
+            input
+        );
+
+
+        document.getElementById('login-modal')
+            .style.display = 'none';
+
+
+        document.getElementById('current-user-display')
+            .innerText = input;
+
+
         await registerUser(input);
-    }
+    };
+
 
     async function registerUser(username) {
+
         try {
-            const userRef = doc(db, "usuarios_cadastrados", username);
-            const docSnap = await getDoc(userRef);
+
+            const userRef =
+                doc(
+                    db,
+                    "usuarios_cadastrados",
+                    username
+                );
+
+
+            const docSnap =
+                await getDoc(userRef);
+
+
             if (!docSnap.exists()) {
-                await setDoc(userRef, { nome: username, data: new Date() });
+
+                await setDoc(
+                    userRef,
+                    {
+                        nome: username,
+                        data: new Date()
+                    }
+                );
             }
+
         } catch (e) {
-            console.log("Erro ao salvar usuário:", e);
+
+            console.log(
+                "Erro ao salvar usuário:",
+                e
+            );
         }
     }
 
+
     window.openLoginModal = function() {
-        document.getElementById('username-input').value = localStorage.getItem('site_current_user') || '';
-        document.getElementById('login-modal').style.display = 'flex';
-    }
+
+        document.getElementById('username-input')
+            .value =
+            localStorage.getItem(
+                'site_current_user'
+            ) || '';
+
+
+        document.getElementById('login-modal')
+            .style.display = 'flex';
+    };
+
 
     function escutarContadorGlobal() {
-        onSnapshot(collection(db, "usuarios_cadastrados"), (snapshot) => {
-            document.getElementById('user-counter').innerText = snapshot.size;
-        });
+
+        onSnapshot(
+            collection(
+                db,
+                "usuarios_cadastrados"
+            ),
+
+            (snapshot) => {
+
+                document.getElementById(
+                    'user-counter'
+                ).innerText = snapshot.size;
+
+            }
+        );
     }
+
 
     function iniciarPresencaOnline() {
-        const presenceRef = doc(db, "usuarios_online", mySessionId);
-        setDoc(presenceRef, { ultimaVez: serverTimestamp() });
+
+        const presenceRef =
+            doc(
+                db,
+                "usuarios_online",
+                mySessionId
+            );
+
+
+        setDoc(
+            presenceRef,
+            {
+                ultimaVez:
+                    serverTimestamp()
+            }
+        );
+
 
         setInterval(() => {
-            setDoc(presenceRef, { ultimaVez: serverTimestamp() }, { merge: true });
+
+            setDoc(
+                presenceRef,
+                {
+                    ultimaVez:
+                        serverTimestamp()
+                },
+                {
+                    merge: true
+                }
+            );
+
         }, 15000);
 
-        window.addEventListener('beforeunload', () => {
-            deleteDoc(presenceRef);
-        });
 
-        onSnapshot(collection(db, "usuarios_online"), (snapshot) => {
-            let onlineCount = 0;
-            const agora = new Date().getTime();
+        window.addEventListener(
+            'beforeunload',
+            () => {
 
-            snapshot.forEach((docSnap) => {
-                const data = docSnap.data();
-                if (data.ultimaVez) {
-                    const timestampOnline = data.ultimaVez.toMillis ? data.ultimaVez.toMillis() : agora;
-                    if (agora - timestampOnline < 45000) {
-                        onlineCount++;
+                deleteDoc(
+                    presenceRef
+                );
+
+            }
+        );
+
+
+        onSnapshot(
+            collection(
+                db,
+                "usuarios_online"
+            ),
+
+            (snapshot) => {
+
+                let onlineCount = 0;
+
+                const agora =
+                    new Date().getTime();
+
+
+                snapshot.forEach(
+                    (docSnap) => {
+
+                        const data =
+                            docSnap.data();
+
+
+                        if (data.ultimaVez) {
+
+                            const timestampOnline =
+                                data.ultimaVez.toMillis
+                                    ? data.ultimaVez.toMillis()
+                                    : agora;
+
+
+                            if (
+                                agora -
+                                timestampOnline <
+                                45000
+                            ) {
+
+                                onlineCount++;
+                            }
+
+                        } else {
+
+                            onlineCount++;
+                        }
+
                     }
-                } else {
-                    onlineCount++;
-                }
-            });
+                );
 
-            document.getElementById('online-counter').innerText = onlineCount > 0 ? onlineCount : 1;
-        });
+
+                document.getElementById(
+                    'online-counter'
+                ).innerText =
+                    onlineCount > 0
+                        ? onlineCount
+                        : 1;
+
+            }
+        );
     }
 
-    // MÉTODO DE CARREGAMENTO PROGRESSIVO DINÂMICO
-    // AGORA VARRE DO MAIOR NÚMERO PARA O MENOR
+
+    // ============================================================
+    // CARREGAMENTO PROGRESSIVO DOS PACKS
+    // ============================================================
+    //
+    // VARRE:
+    //
+    // 250
+    // 249
+    // 248
+    // ...
+    // 1
+    //
+    // UM PACK SÓ É MOSTRADO QUANDO POSSUI:
+    //
+    // info.txt  +  link.txt  +  capa
+    //
+    // ASSIM QUE OS 3 SÃO ENCONTRADOS, O CARD É MOSTRADO
+    // IMEDIATAMENTE, SEM ESPERAR A VARREDURA TERMINAR.
+    // ============================================================
+
     async function autoDiscoverPacks() {
+
         packsData = [];
 
-        // Antes: 1, 2, 3, 4...
-        // Agora: 250, 249, 248, 247...
+
+        // Começa pelo maior número.
         let i = 250;
 
-        const mediaExtensions = ['webm', 'webp', 'jpg', 'png', 'jpeg', 'WEBM', 'WEBP', 'JPG', 'PNG'];
-        
-        const grid = document.getElementById('gallery-grid');
+
+        const mediaExtensions = [
+            'webm',
+            'webp',
+            'jpg',
+            'png',
+            'jpeg',
+            'WEBM',
+            'WEBP',
+            'JPG',
+            'PNG'
+        ];
+
+
+        const grid =
+            document.getElementById(
+                'gallery-grid'
+            );
+
+
         let firstCardAdded = false;
 
+
         while (i >= 1) {
-            const folder = `pack/${i}`;
+
+            const folder =
+                `pack/${i}`;
+
 
             try {
-                const infoRes = await fetch(`${folder}/info.txt?` + new Date().getTime());
 
-                if (infoRes.ok) {
-                    const title = (await infoRes.text()).trim();
-                    
-                    let link = "#";
+                // ==================================================
+                // 1. PROCURAR info.txt
+                // ==================================================
 
-                    try {
-                        const linkRes = await fetch(`${folder}/link.txt`);
+                const infoRes =
+                    await fetch(
+                        `${folder}/info.txt?` +
+                        new Date().getTime()
+                    );
 
-                        if (linkRes.ok) {
-                            link = (await linkRes.text()).trim();
-                        }
-                    } catch (e) {}
 
-                    let image = `${folder}/capa.jpg`;
+                // Se não existe info.txt,
+                // passa imediatamente para o próximo pack.
+                if (!infoRes.ok) {
 
-                    for (let ext of mediaExtensions) {
-                        const imgTest = await fetch(`pack/${i}/capa.${ext}`, { method: 'HEAD' });
+                    i--;
 
-                        if (imgTest.ok) {
-                            image = `pack/${i}/capa.${ext}`;
-                            break;
-                        }
-                    }
-
-                    const packObj = { title, image, link };
-
-                    // Como estamos varrendo de 250 para 1,
-                    // os packs mais novos entram primeiro.
-                    packsData.push(packObj);
-                    
-                    if (!firstCardAdded) {
-                        grid.innerHTML = '';
-                        firstCardAdded = true;
-                    }
-
-                    const start = (currentPage - 1) * itemsPerPage;
-                    const end = start + itemsPerPage;
-
-                    if (packsData.length > start && packsData.length <= end) {
-                        appendCardToGrid(packObj);
-                    }
-
-                    updatePaginationControls();
+                    continue;
                 }
 
+
+                const title =
+                    (await infoRes.text()).trim();
+
+
+                // info.txt vazio não conta como pack completo.
+                if (!title) {
+
+                    i--;
+
+                    continue;
+                }
+
+
+                // ==================================================
+                // 2. PROCURAR link.txt
+                // ==================================================
+
+                let link = null;
+
+
+                try {
+
+                    const linkRes =
+                        await fetch(
+                            `${folder}/link.txt?` +
+                            new Date().getTime()
+                        );
+
+
+                    if (linkRes.ok) {
+
+                        const linkText =
+                            (await linkRes.text()).trim();
+
+
+                        if (linkText) {
+
+                            link = linkText;
+                        }
+                    }
+
+                } catch (e) {}
+
+
+                // Sem link.txt ou link vazio:
+                // não mostra o card.
+                if (!link) {
+
+                    i--;
+
+                    continue;
+                }
+
+
+                // ==================================================
+                // 3. PROCURAR CAPA
+                // ==================================================
+
+                let image = null;
+
+
+                for (let ext of mediaExtensions) {
+
+                    try {
+
+                        const imgTest =
+                            await fetch(
+                                `${folder}/capa.${ext}?` +
+                                new Date().getTime(),
+                                {
+                                    method: 'HEAD'
+                                }
+                            );
+
+
+                        if (imgTest.ok) {
+
+                            image =
+                                `${folder}/capa.${ext}`;
+
+                            break;
+                        }
+
+                    } catch (e) {}
+
+                }
+
+
+                // Sem capa:
+                // não mostra o card.
+                if (!image) {
+
+                    i--;
+
+                    continue;
+                }
+
+
+                // ==================================================
+                // PACK COMPLETO
+                // ==================================================
+
+                const packObj = {
+                    title: title,
+                    image: image,
+                    link: link
+                };
+
+
+                // Adiciona aos dados.
+                packsData.push(packObj);
+
+
+                // Remove "Procurando packs..."
+                // assim que o primeiro pack completo aparece.
+                if (!firstCardAdded) {
+
+                    grid.innerHTML = '';
+
+                    firstCardAdded = true;
+                }
+
+
+                // ==================================================
+                // MOSTRAR O CARD IMEDIATAMENTE
+                // ==================================================
+
+                const start =
+                    (currentPage - 1) *
+                    itemsPerPage;
+
+
+                const end =
+                    start +
+                    itemsPerPage;
+
+
+                // Se o pack pertence à página atual,
+                // ele aparece imediatamente.
+                if (
+                    packsData.length > start &&
+                    packsData.length <= end
+                ) {
+
+                    appendCardToGrid(
+                        packObj
+                    );
+                }
+
+
+                // Atualiza a paginação imediatamente.
+                updatePaginationControls();
+
+
             } catch (e) {
-                // Mantém a varredura mesmo quando uma pasta não existe.
+
+                // Se acontecer algum erro nesse pack,
+                // continua procurando os próximos.
             }
 
-            // Vai para o número anterior.
+
+            // Próximo número.
             i--;
         }
 
+
+        // ============================================================
+        // NENHUM PACK COMPLETO ENCONTRADO
+        // ============================================================
+
         if (packsData.length === 0) {
+
             grid.innerHTML = `
-                <div style="grid-column: 1 / -1; text-align: center; padding: 50px 20px; background: var(--bg-card); border: 1px dashed var(--border-subtle); border-radius: 16px;">
-                    <p style="color: #818cf8; font-weight: 600; margin-bottom: 8px; font-size: 15px;">Nenhum pack encontrado ainda!</p>
-                    <p style="color: var(--text-muted); font-size: 13px; line-height: 1.6;">
-                        Certifique-se de que cada pasta tem <b>info.txt</b>, <b>link.txt</b> e a capa.
+
+                <div style="
+                    grid-column: 1 / -1;
+                    text-align: center;
+                    padding: 50px 20px;
+                    background: var(--bg-card);
+                    border: 1px dashed var(--border-subtle);
+                    border-radius: 16px;
+                ">
+
+                    <p style="
+                        color: #818cf8;
+                        font-weight: 600;
+                        margin-bottom: 8px;
+                        font-size: 15px;
+                    ">
+                        Nenhum pack encontrado ainda!
                     </p>
+
+
+                    <p style="
+                        color: var(--text-muted);
+                        font-size: 13px;
+                        line-height: 1.6;
+                    ">
+                        Certifique-se de que cada pasta tem
+                        <b>info.txt</b>,
+                        <b>link.txt</b>
+                        e a capa.
+                    </p>
+
                 </div>
+
             `;
         }
     }
 
-    function getMediaElement(imagePath, title) {
-        const ext = imagePath.split('.').pop().toLowerCase();
 
-        if (ext === 'webm' || ext === 'mp4') {
-            return `<video src="${imagePath}" autoplay muted loop playsinline></video>`;
+    function getMediaElement(
+        imagePath,
+        title
+    ) {
+
+        const ext =
+            imagePath
+                .split('.')
+                .pop()
+                .toLowerCase();
+
+
+        if (
+            ext === 'webm' ||
+            ext === 'mp4'
+        ) {
+
+            return `
+                <video
+                    src="${imagePath}"
+                    autoplay
+                    muted
+                    loop
+                    playsinline>
+                </video>
+            `;
+
         } else {
-            return `<img src="${imagePath}" alt="${title}" onerror="this.src='https://via.placeholder.com/300x450?text=Sem+Capa'">`;
+
+            return `
+                <img
+                    src="${imagePath}"
+                    alt="${title}"
+                    onerror="this.src='https://via.placeholder.com/300x450?text=Sem+Capa'">
+            `;
         }
     }
 
-    function appendCardToGrid(pack) {
-        const grid = document.getElementById('gallery-grid');
 
-        const card = document.createElement('div');
-        card.className = 'card';
+    function appendCardToGrid(pack) {
+
+        const grid =
+            document.getElementById(
+                'gallery-grid'
+            );
+
+
+        const card =
+            document.createElement(
+                'div'
+            );
+
+
+        card.className =
+            'card';
+
 
         card.innerHTML = `
+
             <div class="card-img-wrapper">
-                ${getMediaElement(pack.image, pack.title)}
+
+                ${getMediaElement(
+                    pack.image,
+                    pack.title
+                )}
+
             </div>
+
+
             <div class="card-content">
-                <div class="card-title">${pack.title}</div>
-                <a href="${pack.link}" target="_blank" class="card-btn">Acessar Pack</a>
+
+                <div class="card-title">
+                    ${pack.title}
+                </div>
+
+
+                <a
+                    href="${pack.link}"
+                    target="_blank"
+                    class="card-btn">
+                    Acessar Pack
+                </a>
+
             </div>
+
         `;
+
 
         grid.appendChild(card);
     }
 
-    window.renderGallery = function() {
-        const grid = document.getElementById('gallery-grid');
 
-        grid.innerHTML = '';
+    window.renderGallery =
+        function() {
 
-        const start = (currentPage - 1) * itemsPerPage;
-        const end = start + itemsPerPage;
+            const grid =
+                document.getElementById(
+                    'gallery-grid'
+                );
 
-        const paginatedItems = packsData.slice(start, end);
 
-        if (paginatedItems.length === 0) return;
+            grid.innerHTML = '';
 
-        paginatedItems.forEach(pack => {
-            appendCardToGrid(pack);
-        });
 
-        updatePaginationControls();
-    }
+            const start =
+                (currentPage - 1) *
+                itemsPerPage;
 
-    window.changePage = function(direction) {
-        const totalPages = Math.ceil(packsData.length / itemsPerPage) || 1;
 
-        currentPage += direction;
+            const end =
+                start +
+                itemsPerPage;
 
-        if (currentPage < 1) currentPage = 1;
-        if (currentPage > totalPages) currentPage = totalPages;
 
-        renderGallery();
-    }
+            const paginatedItems =
+                packsData.slice(
+                    start,
+                    end
+                );
+
+
+            if (
+                paginatedItems.length === 0
+            ) {
+
+                return;
+            }
+
+
+            paginatedItems.forEach(
+                pack => {
+
+                    appendCardToGrid(
+                        pack
+                    );
+
+                }
+            );
+
+
+            updatePaginationControls();
+        };
+
+
+    window.changePage =
+        function(direction) {
+
+            const totalPages =
+                Math.ceil(
+                    packsData.length /
+                    itemsPerPage
+                ) || 1;
+
+
+            currentPage += direction;
+
+
+            if (currentPage < 1) {
+
+                currentPage = 1;
+            }
+
+
+            if (
+                currentPage >
+                totalPages
+            ) {
+
+                currentPage =
+                    totalPages;
+            }
+
+
+            renderGallery();
+        };
+
 
     function updatePaginationControls() {
-        const totalPages = Math.ceil(packsData.length / itemsPerPage) || 1;
 
-        document.getElementById('page-info').innerText = `Página ${currentPage} de ${totalPages}`;
+        const totalPages =
+            Math.ceil(
+                packsData.length /
+                itemsPerPage
+            ) || 1;
 
-        document.getElementById('prev-btn').disabled = currentPage === 1;
-        document.getElementById('next-btn').disabled = currentPage === totalPages;
+
+        document.getElementById(
+            'page-info'
+        ).innerText =
+            `Página ${currentPage} de ${totalPages}`;
+
+
+        document.getElementById(
+            'prev-btn'
+        ).disabled =
+            currentPage === 1;
+
+
+        document.getElementById(
+            'next-btn'
+        ).disabled =
+            currentPage === totalPages;
     }
-</script>
 
-</body>
+</script></body>
 </html>
