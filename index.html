@@ -492,17 +492,16 @@
             });
         }
 
-        // MÉTODO DE CARREGAMENTO PROGRESSIVO DINÂMICO SEM PISCAR
+        // MÉTODO DE CARREGAMENTO PROGRESSIVO DINÂMICO SEM PISCAR (DO MAIOR PARA O MENOR)
         async function autoDiscoverPacks() {
             packsData = [];
-            let i = 1;
-            let consecutiveFailures = 0;
+            let maxPacks = 250;
             const mediaExtensions = ['webm', 'webp', 'jpg', 'png', 'jpeg', 'WEBM', 'WEBP', 'JPG', 'PNG'];
             
             const grid = document.getElementById('gallery-grid');
             let firstCardAdded = false;
 
-            while (consecutiveFailures < 3 && i <= 250) {
+            for (let i = maxPacks; i >= 1; i--) {
                 const folder = `pack/${i}`;
                 try {
                     const infoRes = await fetch(`${folder}/info.txt?` + new Date().getTime());
@@ -532,21 +531,9 @@
                             firstCardAdded = true;
                         }
 
-                        const start = (currentPage - 1) * itemsPerPage;
-                        const end = start + itemsPerPage;
-                        if (packsData.length > start && packsData.length <= end) {
-                            appendCardToGrid(packObj);
-                        }
-
-                        updatePaginationControls();
-                        consecutiveFailures = 0;
-                    } else {
-                        consecutiveFailures++;
+                        renderGallery();
                     }
-                } catch (e) {
-                    consecutiveFailures++;
-                }
-                i++;
+                } catch (e) {}
             }
 
             if (packsData.length === 0) {
