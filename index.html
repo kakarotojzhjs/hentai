@@ -1,7 +1,10 @@
-<!DOCTYPE html><html lang="pt-BR"><head>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Minha Galeria</title>
+
     <style>
         :root {
             --bg-base: #090d16;
@@ -13,891 +16,1392 @@
             --text-main: #f1f5f9;
             --text-muted: #94a3b8;
             --accent-glow: rgba(99, 102, 241, 0.25);
-        }    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', system-ui, -apple-system, sans-serif; }
+        }
 
-    body { 
-        background-color: var(--bg-base); 
-        color: var(--text-main); 
-        display: flex; 
-        flex-direction: column; 
-        min-height: 100vh;
-        background-image: 
-            radial-gradient(circle at 10% 20%, rgba(99, 102, 241, 0.08) 0%, transparent 40%),
-            radial-gradient(circle at 90% 80%, rgba(168, 85, 247, 0.06) 0%, transparent 40%);
-        background-attachment: fixed;
-    }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+        }
 
-    header { 
-        background: rgba(9, 13, 22, 0.75); 
-        backdrop-filter: blur(16px);
-        -webkit-backdrop-filter: blur(16px);
-        position: sticky; 
-        top: 0; 
-        z-index: 100; 
-        padding: 18px 32px; 
-        display: flex; 
-        justify-content: space-between; 
-        align-items: center; 
-        border-bottom: 1px solid var(--border-subtle);
-        flex-wrap: wrap;
-        gap: 15px;
-    }
+        body {
+            background-color: var(--bg-base);
+            color: var(--text-main);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            background-image:
+                radial-gradient(
+                    circle at 10% 20%,
+                    rgba(99, 102, 241, 0.08) 0%,
+                    transparent 40%
+                ),
+                radial-gradient(
+                    circle at 90% 80%,
+                    rgba(168, 85, 247, 0.06) 0%,
+                    transparent 40%
+                );
+            background-attachment: fixed;
+        }
 
-    .logo { 
-        font-size: 20px; 
-        font-weight: 800; 
-        letter-spacing: -0.5px;
-        background: linear-gradient(135deg, #818cf8, #e879f9); 
-        -webkit-background-clip: text; 
-        -webkit-text-fill-color: transparent; 
-    }
+        header {
+            background: rgba(9, 13, 22, 0.75);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            padding: 18px 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-subtle);
+            flex-wrap: wrap;
+            gap: 15px;
+        }
 
-    .menu-options { display: flex; gap: 15px; align-items: center; flex-wrap: wrap; }
-    .user-info { color: var(--text-muted); font-size: 13px; }
-    .user-info strong { color: var(--text-main); font-weight: 600; }
+        .logo {
+            font-size: 20px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            background: linear-gradient(135deg, #818cf8, #e879f9);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
 
-    .counter-badge { 
-        background: rgba(16, 185, 129, 0.1); 
-        border: 1px solid rgba(16, 185, 129, 0.25); 
-        padding: 5px 12px; 
-        border-radius: 30px; 
-        font-size: 12px; 
-        font-weight: 600; 
-        color: #34d399; 
-    }
+        .menu-options {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
 
-    .counter-badge.online {
-        background: rgba(99, 102, 241, 0.1);
-        border: 1px solid rgba(99, 102, 241, 0.25);
-        color: #818cf8;
-    }
+        .user-info {
+            color: var(--text-muted);
+            font-size: 13px;
+        }
 
-    .btn-change-name { 
-        background: rgba(255, 255, 255, 0.03); 
-        border: 1px solid var(--border-subtle); 
-        color: var(--text-muted); 
-        padding: 6px 14px; 
-        border-radius: 8px; 
-        cursor: pointer; 
-        font-size: 13px; 
-        transition: all 0.2s ease; 
-    }
+        .user-info strong {
+            color: var(--text-main);
+            font-weight: 600;
+        }
 
-    .btn-change-name:hover { 
-        border-color: var(--primary); 
-        color: var(--text-main); 
-        background: rgba(99, 102, 241, 0.1); 
-    }
+        .counter-badge {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.25);
+            padding: 5px 12px;
+            border-radius: 30px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #34d399;
+        }
 
-    .notice-container {
-        max-width: 1200px;
-        margin: 24px auto 0 auto;
-        padding: 0 24px;
-        width: 100%;
-    }
+        .counter-badge.online {
+            background: rgba(99, 102, 241, 0.1);
+            border: 1px solid rgba(99, 102, 241, 0.25);
+            color: #818cf8;
+        }
 
-    .notice-card {
-        background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(168, 85, 247, 0.1));
-        border: 1px solid rgba(99, 102, 241, 0.3);
-        border-radius: 16px;
-        padding: 20px 24px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 20px;
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-        flex-wrap: wrap;
-    }
+        .btn-change-name {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-subtle);
+            color: var(--text-muted);
+            padding: 6px 14px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.2s ease;
+        }
 
-    .notice-text {
-        display: flex;
-        flex-direction: column;
-        gap: 4px;
-        flex: 1;
-    }
+        .btn-change-name:hover {
+            border-color: var(--primary);
+            color: var(--text-main);
+            background: rgba(99, 102, 241, 0.1);
+        }
 
-    .notice-title {
-        font-size: 15px;
-        font-weight: 700;
-        color: #818cf8;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-    }
+        .notice-container {
+            max-width: 1200px;
+            margin: 24px auto 0 auto;
+            padding: 0 24px;
+            width: 100%;
+        }
 
-    .notice-desc {
-        font-size: 13px;
-        color: var(--text-muted);
-        line-height: 1.5;
-    }
+        .notice-card {
+            background: linear-gradient(
+                135deg,
+                rgba(99, 102, 241, 0.1),
+                rgba(168, 85, 247, 0.1)
+            );
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            border-radius: 16px;
+            padding: 20px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+            flex-wrap: wrap;
+        }
 
-    .notice-desc strong {
-        color: var(--text-main);
-        background: rgba(255, 255, 255, 0.1);
-        padding: 2px 6px;
-        border-radius: 4px;
-    }
+        .notice-text {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            flex: 1;
+        }
 
-    .telegram-btn {
-        background: #229ed9;
-        color: white;
-        text-decoration: none;
-        padding: 10px 18px;
-        border-radius: 10px;
-        font-weight: 600;
-        font-size: 13px;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        transition: all 0.2s ease;
-        white-space: nowrap;
-        box-shadow: 0 4px 12px rgba(34, 158, 217, 0.3);
-    }
+        .notice-title {
+            font-size: 15px;
+            font-weight: 700;
+            color: #818cf8;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
 
-    .telegram-btn:hover {
-        background: #1b8ac1;
-        transform: translateY(-2px);
-    }
+        .notice-desc {
+            font-size: 13px;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
 
-    main { 
-        flex: 1; 
-        padding: 24px 24px 30px 24px; 
-        max-width: 1200px; 
-        margin: 0 auto; 
-        width: 100%; 
-    }
+        .notice-desc strong {
+            color: var(--text-main);
+            background: rgba(255, 255, 255, 0.1);
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
 
-    .gallery-grid { 
-        display: grid !important; 
-        grid-template-columns: repeat(3, 1fr) !important; 
-        grid-auto-rows: auto;
-        gap: 20px; 
-        width: 100%;
-    }
+        .telegram-btn {
+            background: #229ed9;
+            color: white;
+            text-decoration: none;
+            padding: 10px 18px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+            box-shadow: 0 4px 12px rgba(34, 158, 217, 0.3);
+        }
 
-    .card { 
-        background-color: var(--bg-card); 
-        border-radius: 16px; 
-        overflow: hidden; 
-        border: 1px solid var(--border-subtle); 
-        display: flex; 
-        flex-direction: column; 
-        justify-content: space-between; 
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
-        width: 100%;
-        animation: cardAppear 0.5s ease forwards;
-        opacity: 0;
-        transform: translateY(15px);
-    }
+        .telegram-btn:hover {
+            background: #1b8ac1;
+            transform: translateY(-2px);
+        }
 
-    @keyframes cardAppear {
-        to { opacity: 1; transform: translateY(0); }
-    }
+        main {
+            flex: 1;
+            padding: 24px 24px 30px 24px;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
 
-    .card:hover { 
-        transform: translateY(-6px); 
-        box-shadow: 0 20px 30px -10px var(--accent-glow); 
-        border-color: var(--border-hover); 
-    }
+        .gallery-grid {
+            display: grid !important;
+            grid-template-columns: repeat(3, 1fr) !important;
+            grid-auto-rows: auto;
+            gap: 20px;
+            width: 100%;
+        }
 
-    .card-img-wrapper { 
-        width: 100%; 
-        aspect-ratio: 2 / 3; 
-        overflow: hidden; 
-        background-color: #0b101b; 
-        position: relative;
-    }
+        .card {
+            background-color: var(--bg-card);
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid var(--border-subtle);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
+            width: 100%;
 
-    .card img, .card video { 
-        width: 100%; 
-        height: 100%; 
-        object-fit: cover; 
-        display: block;
-        transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1); 
-    }
+            /* ANIMAÇÃO MANTIDA */
+            animation: cardAppear 0.5s ease forwards;
+            opacity: 0;
+            transform: translateY(15px);
+        }
 
-    .card:hover img, .card:hover video { transform: scale(1.06); }
+        @keyframes cardAppear {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
 
-    .card-content { 
-        padding: 16px; 
-        display: flex; 
-        flex-direction: column; 
-        gap: 12px; 
-        flex: 1; 
-        justify-content: space-between; 
-    }
+        .card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 30px -10px var(--accent-glow);
+            border-color: var(--border-hover);
+        }
 
-    .card-title { 
-        font-size: 14px; 
-        font-weight: 600; 
-        color: var(--text-main); 
-        line-height: 1.4; 
-        display: -webkit-box;
-        -webkit-line-clamp: 2;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
-    }
+        .card-img-wrapper {
+            width: 100%;
+            aspect-ratio: 2 / 3;
+            overflow: hidden;
+            background-color: #0b101b;
+            position: relative;
+        }
 
-    .card-btn { 
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 100%; 
-        padding: 10px; 
-        background: linear-gradient(135deg, var(--primary), #818cf8); 
-        color: white; 
-        text-align: center; 
-        text-decoration: none; 
-        border-radius: 10px; 
-        font-weight: 600; 
-        font-size: 13px; 
-        letter-spacing: 0.3px;
-        transition: opacity 0.2s, transform 0.1s; 
-        box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
-    }
+        .card img,
+        .card video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
 
-    .card-btn:hover { opacity: 0.92; }
-    .card-btn:active { transform: scale(0.98); }
+        .card:hover img,
+        .card:hover video {
+            transform: scale(1.06);
+        }
 
-    footer { 
-        background: rgba(9, 13, 22, 0.75); 
-        backdrop-filter: blur(16px); 
-        padding: 24px; 
-        display: flex; 
-        flex-direction: column; 
-        align-items: center; 
-        gap: 12px; 
-        border-top: 1px solid var(--border-subtle); 
-    }
+        .card-content {
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            flex: 1;
+            justify-content: space-between;
+        }
 
-    .pagination { display: flex; gap: 16px; align-items: center; }
+        .card-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-main);
+            line-height: 1.4;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
 
-    .page-btn { 
-        padding: 10px 20px; 
-        background: var(--bg-card); 
-        color: var(--text-main); 
-        border: 1px solid var(--border-subtle); 
-        border-radius: 10px; 
-        cursor: pointer; 
-        font-weight: 600; 
-        font-size: 13px; 
-        transition: all 0.2s; 
-    }
+        .card-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            padding: 10px;
+            background: linear-gradient(
+                135deg,
+                var(--primary),
+                #818cf8
+            );
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 13px;
+            letter-spacing: 0.3px;
+            transition: opacity 0.2s, transform 0.1s;
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+        }
 
-    .page-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+        .card-btn:hover {
+            opacity: 0.92;
+        }
 
-    .page-btn:hover:not(:disabled) { 
-        border-color: var(--primary); 
-        background: rgba(99, 102, 241, 0.1); 
-    }
+        .card-btn:active {
+            transform: scale(0.98);
+        }
 
-    .page-info { font-size: 13px; color: var(--text-muted); font-weight: 500; }
+        footer {
+            background: rgba(9, 13, 22, 0.75);
+            backdrop-filter: blur(16px);
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            border-top: 1px solid var(--border-subtle);
+        }
 
-    #login-modal { 
-        position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-        background: rgba(5, 8, 15, 0.85); backdrop-filter: blur(12px); 
-        display: flex; justify-content: center; align-items: center; z-index: 1000; padding: 20px; 
-    }
+        .pagination {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+        }
 
-    .modal-content { 
-        background: var(--bg-card); padding: 36px; border-radius: 20px; 
-        width: 100%; max-width: 400px; border: 1px solid var(--border-subtle); 
-        text-align: center; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7); 
-    }
+        .page-btn {
+            padding: 10px 20px;
+            background: var(--bg-card);
+            color: var(--text-main);
+            border: 1px solid var(--border-subtle);
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 13px;
+            transition: all 0.2s;
+        }
 
-    .modal-content h2 { margin-bottom: 8px; font-size: 20px; font-weight: 700; color: var(--text-main); }
-    .modal-content p { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; line-height: 1.5; }
+        .page-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
 
-    .modal-content input { 
-        width: 100%; padding: 12px 16px; margin-bottom: 20px; 
-        background: var(--bg-base); border: 1px solid var(--border-subtle); 
-        color: white; border-radius: 10px; font-size: 14px; outline: none; 
-    }
+        .page-btn:hover:not(:disabled) {
+            border-color: var(--primary);
+            background: rgba(99, 102, 241, 0.1);
+        }
 
-    .modal-content input:focus { border-color: var(--primary); }
+        .page-info {
+            font-size: 13px;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
 
-    .modal-content button.btn-submit { 
-        width: 100%; padding: 12px; background: var(--primary); color: white; 
-        border: none; font-weight: 600; font-size: 14px; border-radius: 10px; cursor: pointer; 
-    }
+        #login-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(5, 8, 15, 0.85);
+            backdrop-filter: blur(12px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            padding: 20px;
+        }
 
-    @media (max-width: 768px) {
-        header { padding: 14px 20px; }
-        main { padding: 20px 10px; }
-        .notice-container { padding: 0 10px; }
-        .notice-card { flex-direction: column; align-items: stretch; text-align: center; }
-        .notice-title { justify-content: center; }
-        .telegram-btn { justify-content: center; width: 100%; }
-        .gallery-grid { grid-template-columns: repeat(3, 1fr) !important; gap: 8px; }
-    }
-</style>
+        .modal-content {
+            background: var(--bg-card);
+            padding: 36px;
+            border-radius: 20px;
+            width: 100%;
+            max-width: 400px;
+            border: 1px solid var(--border-subtle);
+            text-align: center;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+        }
 
-</head><body onload="initAuth()"><div id="login-modal">
-    <div class="modal-content">
-        <h2>Bem-vindo(a)</h2>
-        <p>Insira seu nome de usuário para acessar o painel.</p>
-        <input type="text" id="username-input" placeholder="Seu nome..." autocomplete="off">
-        <button class="btn-submit" onclick="handleLogin()">Entrar</button>
-    </div>
-</div><header>
-    <div class="logo">⚡ Galeria</div><div class="menu-options">
-    <span class="user-info">
-        Usuário: <strong id="current-user-display">-</strong>
-    </span>
+        .modal-content h2 {
+            margin-bottom: 8px;
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text-main);
+        }
 
-    <div class="counter-badge online">
-        🟢 Online: <span id="online-counter">1</span>
-    </div>
+        .modal-content p {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-bottom: 24px;
+            line-height: 1.5;
+        }
 
-    <div class="counter-badge">
-        👥 Cadastrados: <span id="user-counter">...</span>
-    </div>
+        .modal-content input {
+            width: 100%;
+            padding: 12px 16px;
+            margin-bottom: 20px;
+            background: var(--bg-base);
+            border: 1px solid var(--border-subtle);
+            color: white;
+            border-radius: 10px;
+            font-size: 14px;
+            outline: none;
+        }
 
-    <button class="btn-change-name" onclick="openLoginModal()">Alterar</button>
-</div>
+        .modal-content input:focus {
+            border-color: var(--primary);
+        }
 
-</header><div class="notice-container">
-    <div class="notice-card">    <div class="notice-text">
-        <div class="notice-title">⚠️ Aviso Importante</div>
+        .modal-content button.btn-submit {
+            width: 100%;
+            padding: 12px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            font-weight: 600;
+            font-size: 14px;
+            border-radius: 10px;
+            cursor: pointer;
+        }
 
-        <div class="notice-desc">
-            A senha para ter acesso aos packs e conteúdos é:
-            <strong style="color: #ff3333;">hentai</strong>
-            (ou verifique o canal oficial).
+        @media (max-width: 768px) {
+            header {
+                padding: 14px 20px;
+            }
+
+            main {
+                padding: 20px 10px;
+            }
+
+            .notice-container {
+                padding: 0 10px;
+            }
+
+            .notice-card {
+                flex-direction: column;
+                align-items: stretch;
+                text-align: center;
+            }
+
+            .notice-title {
+                justify-content: center;
+            }
+
+            .telegram-btn {
+                justify-content: center;
+                width: 100%;
+            }
+
+            .gallery-grid {
+                grid-template-columns: repeat(3, 1fr) !important;
+                gap: 8px;
+            }
+        }
+    </style>
+</head>
+
+<body onload="initAuth()">
+
+    <div id="login-modal">
+        <div class="modal-content">
+            <h2>Bem-vindo(a)</h2>
+
+            <p>
+                Insira seu nome de usuário para acessar o painel.
+            </p>
+
+            <input
+                type="text"
+                id="username-input"
+                placeholder="Seu nome..."
+                autocomplete="off"
+            >
+
+            <button
+                class="btn-submit"
+                onclick="handleLogin()">
+                Entrar
+            </button>
         </div>
     </div>
 
-    <a href="https://t.me/+-_SV0c4vFbpmOTcx"
-       target="_blank"
-       class="telegram-btn">
-        📢 Canal Oficial (Novidades)
-    </a>
+    <header>
 
-</div>
+        <div class="logo">
+            ⚡ Galeria
+        </div>
 
-</div><main>
-    <div class="gallery-grid" id="gallery-grid">
-        <p id="loading-msg"
-           style="grid-column: 1 / -1; text-align: center; color: var(--text-muted); padding: 40px;">
-            Procurando packs aos poucos...
-        </p>
+        <div class="menu-options">
+
+            <span class="user-info">
+                Usuário:
+                <strong id="current-user-display">-</strong>
+            </span>
+
+            <div class="counter-badge online">
+                🟢 Online:
+                <span id="online-counter">1</span>
+            </div>
+
+            <div class="counter-badge">
+                👥 Cadastrados:
+                <span id="user-counter">...</span>
+            </div>
+
+            <button
+                class="btn-change-name"
+                onclick="openLoginModal()">
+                Alterar
+            </button>
+
+        </div>
+    </header>
+
+    <div class="notice-container">
+
+        <div class="notice-card">
+
+            <div class="notice-text">
+
+                <div class="notice-title">
+                    ⚠️ Aviso Importante
+                </div>
+
+                <div class="notice-desc">
+                    A senha para ter acesso aos packs e conteúdos é:
+                    <strong style="color: #ff3333;">
+                        hentai
+                    </strong>
+                    (ou verifique o canal oficial).
+                </div>
+
+            </div>
+
+            <a
+                href="https://t.me/+-_SV0c4vFbpmOTcx"
+                target="_blank"
+                class="telegram-btn">
+                📢 Canal Oficial (Novidades)
+            </a>
+
+        </div>
+
     </div>
-</main><footer>
-    <div class="pagination">    <button class="page-btn"
-            id="prev-btn"
-            onclick="changePage(-1)"
-            disabled>
-        ← Anterior
-    </button>
 
-    <span class="page-info" id="page-info">
-        Página 1 de 1
-    </span>
+    <main>
 
-    <button class="page-btn"
-            id="next-btn"
-            onclick="changePage(1)"
-            disabled>
-        Próxima →
-    </button>
+        <div
+            class="gallery-grid"
+            id="gallery-grid">
 
-</div>
+            <p
+                id="loading-msg"
+                style="
+                    grid-column: 1 / -1;
+                    text-align: center;
+                    color: var(--text-muted);
+                    padding: 40px;
+                ">
+                Procurando packs aos poucos...
+            </p>
 
-</footer><script type="module">
+        </div>
 
-    import {
-        initializeApp
-    } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
+    </main>
 
-    import {
-        getFirestore,
-        collection,
-        doc,
-        getDoc,
-        setDoc,
-        deleteDoc,
-        onSnapshot,
-        serverTimestamp
-    } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+    <footer>
 
+        <div class="pagination">
 
-    const firebaseConfig = {
-        apiKey: "AIzaSyAQcXNaZrStco_gXgbgG4ikWa0AexUC8nc",
-        authDomain: "cervido-7ce44.firebaseapp.com",
-        projectId: "cervido-7ce44",
-        storageBucket: "cervido-7ce44.firebasestorage.app",
-        messagingSenderId: "57605188151",
-        appId: "1:57605188151:web:b3e8de24117097acaf6db2",
-        measurementId: "G-VRTT13YEZE"
-    };
+            <button
+                class="page-btn"
+                id="prev-btn"
+                onclick="changePage(-1)"
+                disabled>
+                ← Anterior
+            </button>
 
+            <span
+                class="page-info"
+                id="page-info">
+                Página 1 de 1
+            </span>
 
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
+            <button
+                class="page-btn"
+                id="next-btn"
+                onclick="changePage(1)"
+                disabled>
+                Próxima →
+            </button>
 
+        </div>
 
-    let packsData = [];
-    let currentPage = 1;
+    </footer>
 
-    const itemsPerPage = 15;
+    <script type="module">
 
-    let mySessionId =
-        'user_' +
-        Math.random()
-            .toString(36)
-            .substring(2, 9);
+        import {
+            initializeApp
+        } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
 
-
-    window.initAuth = async function() {
-
-        let currentUser =
-            localStorage.getItem('site_current_user');
+        import {
+            getFirestore,
+            collection,
+            doc,
+            getDoc,
+            setDoc,
+            deleteDoc,
+            onSnapshot,
+            serverTimestamp
+        } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
 
 
-        if (!currentUser) {
+        const firebaseConfig = {
 
-            document.getElementById('login-modal')
-                .style.display = 'flex';
+            apiKey:
+                "AIzaSyAQcXNaZrStco_gXgbgG4ikWa0AexUC8nc",
 
-        } else {
+            authDomain:
+                "cervido-7ce44.firebaseapp.com",
 
-            document.getElementById('login-modal')
-                .style.display = 'none';
+            projectId:
+                "cervido-7ce44",
 
-            document.getElementById('current-user-display')
-                .innerText = currentUser;
+            storageBucket:
+                "cervido-7ce44.firebasestorage.app",
 
-            await registerUser(currentUser);
-        }
+            messagingSenderId:
+                "57605188151",
 
+            appId:
+                "1:57605188151:web:b3e8de24117097acaf6db2",
 
-        escutarContadorGlobal();
-        iniciarPresencaOnline();
-
-        autoDiscoverPacks();
-    };
-
-
-    window.handleLogin = async function() {
-
-        const input =
-            document.getElementById('username-input')
-                .value
-                .trim();
+            measurementId:
+                "G-VRTT13YEZE"
+        };
 
 
-        if (!input) {
+        const app =
+            initializeApp(firebaseConfig);
 
-            alert('Digite um nome válido.');
-
-            return;
-        }
-
-
-        localStorage.setItem(
-            'site_current_user',
-            input
-        );
+        const db =
+            getFirestore(app);
 
 
-        document.getElementById('login-modal')
-            .style.display = 'none';
+        let packsData = [];
+
+        let currentPage = 1;
+
+        const itemsPerPage = 15;
 
 
-        document.getElementById('current-user-display')
-            .innerText = input;
+        let mySessionId =
+            'user_' +
+            Math.random()
+                .toString(36)
+                .substring(2, 9);
 
 
-        await registerUser(input);
-    };
+        window.initAuth =
+            async function() {
+
+                let currentUser =
+                    localStorage.getItem(
+                        'site_current_user'
+                    );
 
 
-    async function registerUser(username) {
+                if (!currentUser) {
 
-        try {
+                    document.getElementById(
+                        'login-modal'
+                    ).style.display = 'flex';
 
-            const userRef =
-                doc(
-                    db,
-                    "usuarios_cadastrados",
-                    username
+                } else {
+
+                    document.getElementById(
+                        'login-modal'
+                    ).style.display = 'none';
+
+                    document.getElementById(
+                        'current-user-display'
+                    ).innerText =
+                        currentUser;
+
+                    await registerUser(
+                        currentUser
+                    );
+                }
+
+
+                escutarContadorGlobal();
+
+                iniciarPresencaOnline();
+
+                autoDiscoverPacks();
+            };
+
+
+        window.handleLogin =
+            async function() {
+
+                const input =
+                    document.getElementById(
+                        'username-input'
+                    )
+                    .value
+                    .trim();
+
+
+                if (!input) {
+
+                    alert(
+                        'Digite um nome válido.'
+                    );
+
+                    return;
+                }
+
+
+                localStorage.setItem(
+                    'site_current_user',
+                    input
                 );
 
-
-            const docSnap =
-                await getDoc(userRef);
-
-
-            if (!docSnap.exists()) {
-
-                await setDoc(
-                    userRef,
-                    {
-                        nome: username,
-                        data: new Date()
-                    }
-                );
-            }
-
-        } catch (e) {
-
-            console.log(
-                "Erro ao salvar usuário:",
-                e
-            );
-        }
-    }
-
-
-    window.openLoginModal = function() {
-
-        document.getElementById('username-input')
-            .value =
-            localStorage.getItem(
-                'site_current_user'
-            ) || '';
-
-
-        document.getElementById('login-modal')
-            .style.display = 'flex';
-    };
-
-
-    function escutarContadorGlobal() {
-
-        onSnapshot(
-            collection(
-                db,
-                "usuarios_cadastrados"
-            ),
-
-            (snapshot) => {
 
                 document.getElementById(
-                    'user-counter'
-                ).innerText = snapshot.size;
+                    'login-modal'
+                ).style.display = 'none';
 
+
+                document.getElementById(
+                    'current-user-display'
+                ).innerText = input;
+
+
+                await registerUser(input);
+            };
+
+
+        async function registerUser(
+            username
+        ) {
+
+            try {
+
+                const userRef =
+                    doc(
+                        db,
+                        "usuarios_cadastrados",
+                        username
+                    );
+
+
+                const docSnap =
+                    await getDoc(userRef);
+
+
+                if (!docSnap.exists()) {
+
+                    await setDoc(
+                        userRef,
+                        {
+                            nome: username,
+                            data: new Date()
+                        }
+                    );
+                }
+
+            } catch (e) {
+
+                console.log(
+                    "Erro ao salvar usuário:",
+                    e
+                );
             }
-        );
-    }
+        }
 
 
-    function iniciarPresencaOnline() {
+        window.openLoginModal =
+            function() {
 
-        const presenceRef =
-            doc(
-                db,
-                "usuarios_online",
-                mySessionId
+                document.getElementById(
+                    'username-input'
+                ).value =
+                    localStorage.getItem(
+                        'site_current_user'
+                    ) || '';
+
+
+                document.getElementById(
+                    'login-modal'
+                ).style.display = 'flex';
+            };
+
+
+        function escutarContadorGlobal() {
+
+            onSnapshot(
+                collection(
+                    db,
+                    "usuarios_cadastrados"
+                ),
+
+                (snapshot) => {
+
+                    document.getElementById(
+                        'user-counter'
+                    ).innerText =
+                        snapshot.size;
+                }
             );
+        }
 
 
-        setDoc(
-            presenceRef,
-            {
-                ultimaVez:
-                    serverTimestamp()
-            }
-        );
+        function iniciarPresencaOnline() {
 
+            const presenceRef =
+                doc(
+                    db,
+                    "usuarios_online",
+                    mySessionId
+                );
 
-        setInterval(() => {
 
             setDoc(
                 presenceRef,
                 {
                     ultimaVez:
                         serverTimestamp()
-                },
-                {
-                    merge: true
                 }
             );
 
-        }, 15000);
 
+            setInterval(() => {
 
-        window.addEventListener(
-            'beforeunload',
-            () => {
-
-                deleteDoc(
-                    presenceRef
+                setDoc(
+                    presenceRef,
+                    {
+                        ultimaVez:
+                            serverTimestamp()
+                    },
+                    {
+                        merge: true
+                    }
                 );
 
-            }
-        );
+            }, 15000);
 
 
-        onSnapshot(
-            collection(
-                db,
-                "usuarios_online"
-            ),
+            window.addEventListener(
+                'beforeunload',
+                () => {
 
-            (snapshot) => {
+                    deleteDoc(
+                        presenceRef
+                    );
 
-                let onlineCount = 0;
-
-                const agora =
-                    new Date().getTime();
+                }
+            );
 
 
-                snapshot.forEach(
-                    (docSnap) => {
+            onSnapshot(
+                collection(
+                    db,
+                    "usuarios_online"
+                ),
 
-                        const data =
-                            docSnap.data();
+                (snapshot) => {
+
+                    let onlineCount = 0;
+
+                    const agora =
+                        new Date().getTime();
 
 
-                        if (data.ultimaVez) {
+                    snapshot.forEach(
+                        (docSnap) => {
 
-                            const timestampOnline =
-                                data.ultimaVez.toMillis
-                                    ? data.ultimaVez.toMillis()
-                                    : agora;
+                            const data =
+                                docSnap.data();
 
 
-                            if (
-                                agora -
-                                timestampOnline <
-                                45000
-                            ) {
+                            if (data.ultimaVez) {
+
+                                const timestampOnline =
+                                    data.ultimaVez.toMillis
+                                        ? data.ultimaVez.toMillis()
+                                        : agora;
+
+
+                                if (
+                                    agora -
+                                    timestampOnline <
+                                    45000
+                                ) {
+
+                                    onlineCount++;
+                                }
+
+                            } else {
 
                                 onlineCount++;
                             }
 
-                        } else {
-
-                            onlineCount++;
                         }
-
-                    }
-                );
-
-
-                document.getElementById(
-                    'online-counter'
-                ).innerText =
-                    onlineCount > 0
-                        ? onlineCount
-                        : 1;
-
-            }
-        );
-    }
-
-
-    // ============================================================
-    // CARREGAMENTO PROGRESSIVO DOS PACKS
-    // ============================================================
-    //
-    // VARRE:
-    //
-    // 250
-    // 249
-    // 248
-    // ...
-    // 1
-    //
-    // UM PACK SÓ É MOSTRADO QUANDO POSSUI:
-    //
-    // info.txt  +  link.txt  +  capa
-    //
-    // ASSIM QUE OS 3 SÃO ENCONTRADOS, O CARD É MOSTRADO
-    // IMEDIATAMENTE, SEM ESPERAR A VARREDURA TERMINAR.
-    // ============================================================
-
-    async function autoDiscoverPacks() {
-
-        packsData = [];
-
-
-        // Começa pelo maior número.
-        let i = 250;
-
-
-        const mediaExtensions = [
-            'webm',
-            'webp',
-            'jpg',
-            'png',
-            'jpeg',
-            'WEBM',
-            'WEBP',
-            'JPG',
-            'PNG'
-        ];
-
-
-        const grid =
-            document.getElementById(
-                'gallery-grid'
-            );
-
-
-        let firstCardAdded = false;
-
-
-        while (i >= 1) {
-
-            const folder =
-                `pack/${i}`;
-
-
-            try {
-
-                // ==================================================
-                // 1. PROCURAR info.txt
-                // ==================================================
-
-                const infoRes =
-                    await fetch(
-                        `${folder}/info.txt?` +
-                        new Date().getTime()
                     );
 
 
-                // Se não existe info.txt,
-                // passa imediatamente para o próximo pack.
-                if (!infoRes.ok) {
+                    document.getElementById(
+                        'online-counter'
+                    ).innerText =
+                        onlineCount > 0
+                            ? onlineCount
+                            : 1;
 
-                    i--;
-
-                    continue;
                 }
+            );
+        }
 
 
-                const title =
-                    (await infoRes.text()).trim();
+        // ==========================================================
+        // BUSCA PROGRESSIVA
+        //
+        // ORDEM:
+        //
+        // 250
+        // 249
+        // 248
+        // ...
+        // 1
+        //
+        // CADA PACK É FINALIZADO ANTES DE IR PARA O PRÓXIMO.
+        //
+        // ASSIM QUE INFO + LINK + CAPA SÃO ENCONTRADOS,
+        // O CARD É COLOCADO NA TELA IMEDIATAMENTE.
+        // ==========================================================
+
+        async function autoDiscoverPacks() {
+
+            packsData = [];
+
+            currentPage = 1;
 
 
-                // info.txt vazio não conta como pack completo.
-                if (!title) {
-
-                    i--;
-
-                    continue;
-                }
+            const grid =
+                document.getElementById(
+                    'gallery-grid'
+                );
 
 
-                // ==================================================
-                // 2. PROCURAR link.txt
-                // ==================================================
+            const mediaExtensions = [
 
-                let link = null;
+                'webm',
+                'webp',
+                'jpg',
+                'png',
+                'jpeg',
+
+                'WEBM',
+                'WEBP',
+                'JPG',
+                'PNG',
+                'JPEG'
+            ];
+
+
+            let encontrouAlgum = false;
+
+
+            // COMEÇA NO MAIOR
+            let i = 250;
+
+
+            while (i >= 1) {
+
+                const numeroAtual = i;
+
+                const folder =
+                    `pack/${numeroAtual}`;
 
 
                 try {
 
-                    const linkRes =
+                    // =================================================
+                    // 1 — INFO.TXT
+                    // =================================================
+
+                    const infoRes =
                         await fetch(
-                            `${folder}/link.txt?` +
-                            new Date().getTime()
+                            `${folder}/info.txt?` +
+                            Date.now(),
+                            {
+                                cache: 'no-store'
+                            }
                         );
 
 
-                    if (linkRes.ok) {
+                    // Não tem info -> próximo
+                    if (!infoRes.ok) {
 
-                        const linkText =
-                            (await linkRes.text()).trim();
+                        i--;
+
+                        continue;
+                    }
 
 
-                        if (linkText) {
+                    const title =
+                        (
+                            await infoRes.text()
+                        ).trim();
 
-                            link = linkText;
+
+                    // Info vazio -> próximo
+                    if (!title) {
+
+                        i--;
+
+                        continue;
+                    }
+
+
+                    // =================================================
+                    // 2 — LINK.TXT
+                    // =================================================
+
+                    const linkRes =
+                        await fetch(
+                            `${folder}/link.txt?` +
+                            Date.now(),
+                            {
+                                cache: 'no-store'
+                            }
+                        );
+
+
+                    // Não tem link -> próximo
+                    if (!linkRes.ok) {
+
+                        i--;
+
+                        continue;
+                    }
+
+
+                    const link =
+                        (
+                            await linkRes.text()
+                        ).trim();
+
+
+                    // Link vazio -> próximo
+                    if (!link) {
+
+                        i--;
+
+                        continue;
+                    }
+
+
+                    // =================================================
+                    // 3 — CAPA
+                    // =================================================
+
+                    let image = null;
+
+
+                    for (
+                        const ext
+                        of mediaExtensions
+                    ) {
+
+                        try {
+
+                            const capaRes =
+                                await fetch(
+                                    `${folder}/capa.${ext}?` +
+                                    Date.now(),
+                                    {
+                                        method: 'HEAD',
+                                        cache: 'no-store'
+                                    }
+                                );
+
+
+                            if (
+                                capaRes.ok
+                            ) {
+
+                                image =
+                                    `${folder}/capa.${ext}`;
+
+                                break;
+                            }
+
+                        } catch (e) {
+
+                            // Continua procurando
+                            // outra extensão.
                         }
                     }
 
-                } catch (e) {}
+
+                    // Não encontrou capa -> próximo
+                    if (!image) {
+
+                        i--;
+
+                        continue;
+                    }
 
 
-                // Sem link.txt ou link vazio:
-                // não mostra o card.
-                if (!link) {
+                    // =================================================
+                    // OS 3 FORAM ENCONTRADOS
+                    // =================================================
 
-                    i--;
+                    const packObj = {
 
-                    continue;
+                        numero:
+                            numeroAtual,
+
+                        title:
+                            title,
+
+                        image:
+                            image,
+
+                        link:
+                            link
+                    };
+
+
+                    // Guarda nos dados
+                    packsData.push(
+                        packObj
+                    );
+
+
+                    encontrouAlgum = true;
+
+
+                    // =================================================
+                    // PRIMEIRO PACK:
+                    // REMOVE "PROCURANDO..."
+                    // =================================================
+
+                    if (
+                        grid.querySelector(
+                            '#loading-msg'
+                        )
+                    ) {
+
+                        grid.innerHTML = '';
+                    }
+
+
+                    // =================================================
+                    // MOSTRA O CARD AGORA
+                    // =================================================
+
+                    const start =
+                        (
+                            currentPage - 1
+                        ) *
+                        itemsPerPage;
+
+
+                    const end =
+                        start +
+                        itemsPerPage;
+
+
+                    if (
+                        packsData.length > start &&
+                        packsData.length <= end
+                    ) {
+
+                        appendCardToGrid(
+                            packObj
+                        );
+
+
+                        updatePaginationControls();
+
+
+                        // =================================================
+                        // IMPORTANTE:
+                        //
+                        // FORÇA O NAVEGADOR A DESENHAR O CARD AGORA,
+                        // ANTES DE CONTINUAR PARA O PRÓXIMO PACK.
+                        // =================================================
+
+                        await new Promise(
+                            resolve =>
+                                requestAnimationFrame(
+                                    () => resolve()
+                                )
+                        );
+
+
+                        // Mais uma pequena oportunidade para o navegador
+                        // atualizar a tela antes da próxima busca.
+                        await new Promise(
+                            resolve =>
+                                setTimeout(
+                                    resolve,
+                                    0
+                                )
+                        );
+                    }
+
+
+                } catch (e) {
+
+                    console.log(
+                        `Erro ao verificar pack ${numeroAtual}:`,
+                        e
+                    );
                 }
 
 
-                // ==================================================
-                // 3. PROCURAR CAPA
-                // ==================================================
+                // =================================================
+                // AGORA SIM VAI PARA O PRÓXIMO
+                // =================================================
 
-                let image = null;
-
-
-                for (let ext of mediaExtensions) {
-
-                    try {
-
-                        const imgTest =
-                            await fetch(
-                                `${folder}/capa.${ext}?` +
-                                new Date().getTime(),
-                                {
-                                    method: 'HEAD'
-                                }
-                            );
+                i--;
+            }
 
 
-                        if (imgTest.ok) {
+            // ==========================================================
+            // TERMINOU 250 → 1
+            // ==========================================================
 
-                            image =
-                                `${folder}/capa.${ext}`;
+            if (!encontrouAlgum) {
 
-                            break;
-                        }
+                grid.innerHTML = `
 
-                    } catch (e) {}
+                    <div style="
+                        grid-column: 1 / -1;
+                        text-align: center;
+                        padding: 50px 20px;
+                        background: var(--bg-card);
+                        border: 1px dashed var(--border-subtle);
+                        border-radius: 16px;
+                    ">
 
-                }
+                        <p style="
+                            color: #818cf8;
+                            font-weight: 600;
+                            margin-bottom: 8px;
+                            font-size: 15px;
+                        ">
+                            Nenhum pack encontrado ainda!
+                        </p>
 
+                        <p style="
+                            color: var(--text-muted);
+                            font-size: 13px;
+                            line-height: 1.6;
+                        ">
+                            Certifique-se de que cada pasta tem
+                            <b>info.txt</b>,
+                            <b>link.txt</b>
+                            e a capa.
+                        </p>
 
-                // Sem capa:
-                // não mostra o card.
-                if (!image) {
+                    </div>
 
-                    i--;
+                `;
 
-                    continue;
-                }
-
-
-                // ==================================================
-                // PACK COMPLETO
-                // ==================================================
-
-                const packObj = {
-                    title: title,
-                    image: image,
-                    link: link
-                };
-
-
-                // Adiciona aos dados.
-                packsData.push(packObj);
-
-
-                // Remove "Procurando packs..."
-                // assim que o primeiro pack completo aparece.
-                if (!firstCardAdded) {
-
-                    grid.innerHTML = '';
-
-                    firstCardAdded = true;
-                }
+            }
 
 
-                // ==================================================
-                // MOSTRAR O CARD IMEDIATAMENTE
-                // ==================================================
+            updatePaginationControls();
+        }
+
+
+        function getMediaElement(
+            imagePath,
+            title
+        ) {
+
+            const ext =
+                imagePath
+                    .split('.')
+                    .pop()
+                    .toLowerCase();
+
+
+            if (
+                ext === 'webm' ||
+                ext === 'mp4'
+            ) {
+
+                return `
+
+                    <video
+                        src="${imagePath}"
+                        autoplay
+                        muted
+                        loop
+                        playsinline>
+                    </video>
+
+                `;
+
+            }
+
+
+            return `
+
+                <img
+                    src="${imagePath}"
+                    alt="${title}"
+                    onerror="
+                        this.src='https://via.placeholder.com/300x450?text=Sem+Capa'
+                    "
+                >
+
+            `;
+        }
+
+
+        function appendCardToGrid(
+            pack
+        ) {
+
+            const grid =
+                document.getElementById(
+                    'gallery-grid'
+                );
+
+
+            const card =
+                document.createElement(
+                    'div'
+                );
+
+
+            card.className =
+                'card';
+
+
+            card.innerHTML = `
+
+                <div class="card-img-wrapper">
+
+                    ${getMediaElement(
+                        pack.image,
+                        pack.title
+                    )}
+
+                </div>
+
+
+                <div class="card-content">
+
+                    <div class="card-title">
+                        ${pack.title}
+                    </div>
+
+
+                    <a
+                        href="${pack.link}"
+                        target="_blank"
+                        class="card-btn">
+                        Acessar Pack
+                    </a>
+
+                </div>
+
+            `;
+
+
+            grid.appendChild(
+                card
+            );
+        }
+
+
+        window.renderGallery =
+            function() {
+
+                const grid =
+                    document.getElementById(
+                        'gallery-grid'
+                    );
+
+
+                grid.innerHTML = '';
+
 
                 const start =
-                    (currentPage - 1) *
+                    (
+                        currentPage - 1
+                    ) *
                     itemsPerPage;
 
 
@@ -906,226 +1410,77 @@
                     itemsPerPage;
 
 
-                // Se o pack pertence à página atual,
-                // ele aparece imediatamente.
+                const paginatedItems =
+                    packsData.slice(
+                        start,
+                        end
+                    );
+
+
                 if (
-                    packsData.length > start &&
-                    packsData.length <= end
+                    paginatedItems.length === 0
                 ) {
 
-                    appendCardToGrid(
-                        packObj
-                    );
+                    updatePaginationControls();
+
+                    return;
                 }
 
 
-                // Atualiza a paginação imediatamente.
+                paginatedItems.forEach(
+                    pack => {
+
+                        appendCardToGrid(
+                            pack
+                        );
+
+                    }
+                );
+
+
                 updatePaginationControls();
+            };
 
 
-            } catch (e) {
-
-                // Se acontecer algum erro nesse pack,
-                // continua procurando os próximos.
-            }
-
-
-            // Próximo número.
-            i--;
-        }
-
-
-        // ============================================================
-        // NENHUM PACK COMPLETO ENCONTRADO
-        // ============================================================
-
-        if (packsData.length === 0) {
-
-            grid.innerHTML = `
-
-                <div style="
-                    grid-column: 1 / -1;
-                    text-align: center;
-                    padding: 50px 20px;
-                    background: var(--bg-card);
-                    border: 1px dashed var(--border-subtle);
-                    border-radius: 16px;
-                ">
-
-                    <p style="
-                        color: #818cf8;
-                        font-weight: 600;
-                        margin-bottom: 8px;
-                        font-size: 15px;
-                    ">
-                        Nenhum pack encontrado ainda!
-                    </p>
-
-
-                    <p style="
-                        color: var(--text-muted);
-                        font-size: 13px;
-                        line-height: 1.6;
-                    ">
-                        Certifique-se de que cada pasta tem
-                        <b>info.txt</b>,
-                        <b>link.txt</b>
-                        e a capa.
-                    </p>
-
-                </div>
-
-            `;
-        }
-    }
-
-
-    function getMediaElement(
-        imagePath,
-        title
-    ) {
-
-        const ext =
-            imagePath
-                .split('.')
-                .pop()
-                .toLowerCase();
-
-
-        if (
-            ext === 'webm' ||
-            ext === 'mp4'
-        ) {
-
-            return `
-                <video
-                    src="${imagePath}"
-                    autoplay
-                    muted
-                    loop
-                    playsinline>
-                </video>
-            `;
-
-        } else {
-
-            return `
-                <img
-                    src="${imagePath}"
-                    alt="${title}"
-                    onerror="this.src='https://via.placeholder.com/300x450?text=Sem+Capa'">
-            `;
-        }
-    }
-
-
-    function appendCardToGrid(pack) {
-
-        const grid =
-            document.getElementById(
-                'gallery-grid'
-            );
-
-
-        const card =
-            document.createElement(
-                'div'
-            );
-
-
-        card.className =
-            'card';
-
-
-        card.innerHTML = `
-
-            <div class="card-img-wrapper">
-
-                ${getMediaElement(
-                    pack.image,
-                    pack.title
-                )}
-
-            </div>
-
-
-            <div class="card-content">
-
-                <div class="card-title">
-                    ${pack.title}
-                </div>
-
-
-                <a
-                    href="${pack.link}"
-                    target="_blank"
-                    class="card-btn">
-                    Acessar Pack
-                </a>
-
-            </div>
-
-        `;
-
-
-        grid.appendChild(card);
-    }
-
-
-    window.renderGallery =
-        function() {
-
-            const grid =
-                document.getElementById(
-                    'gallery-grid'
-                );
-
-
-            grid.innerHTML = '';
-
-
-            const start =
-                (currentPage - 1) *
-                itemsPerPage;
-
-
-            const end =
-                start +
-                itemsPerPage;
-
-
-            const paginatedItems =
-                packsData.slice(
-                    start,
-                    end
-                );
-
-
-            if (
-                paginatedItems.length === 0
+        window.changePage =
+            function(
+                direction
             ) {
 
-                return;
-            }
+                const totalPages =
+                    Math.ceil(
+                        packsData.length /
+                        itemsPerPage
+                    ) || 1;
 
 
-            paginatedItems.forEach(
-                pack => {
+                currentPage +=
+                    direction;
 
-                    appendCardToGrid(
-                        pack
-                    );
 
+                if (
+                    currentPage < 1
+                ) {
+
+                    currentPage = 1;
                 }
-            );
 
 
-            updatePaginationControls();
-        };
+                if (
+                    currentPage >
+                    totalPages
+                ) {
+
+                    currentPage =
+                        totalPages;
+                }
 
 
-    window.changePage =
-        function(direction) {
+                renderGallery();
+            };
+
+
+        function updatePaginationControls() {
 
             const totalPages =
                 Math.ceil(
@@ -1134,55 +1489,25 @@
                 ) || 1;
 
 
-            currentPage += direction;
+            document.getElementById(
+                'page-info'
+            ).innerText =
+                `Página ${currentPage} de ${totalPages}`;
 
 
-            if (currentPage < 1) {
-
-                currentPage = 1;
-            }
-
-
-            if (
-                currentPage >
-                totalPages
-            ) {
-
-                currentPage =
-                    totalPages;
-            }
+            document.getElementById(
+                'prev-btn'
+            ).disabled =
+                currentPage === 1;
 
 
-            renderGallery();
-        };
+            document.getElementById(
+                'next-btn'
+            ).disabled =
+                currentPage === totalPages;
+        }
 
+    </script>
 
-    function updatePaginationControls() {
-
-        const totalPages =
-            Math.ceil(
-                packsData.length /
-                itemsPerPage
-            ) || 1;
-
-
-        document.getElementById(
-            'page-info'
-        ).innerText =
-            `Página ${currentPage} de ${totalPages}`;
-
-
-        document.getElementById(
-            'prev-btn'
-        ).disabled =
-            currentPage === 1;
-
-
-        document.getElementById(
-            'next-btn'
-        ).disabled =
-            currentPage === totalPages;
-    }
-
-</script></body>
-</html>
+</body>
+    </html>
