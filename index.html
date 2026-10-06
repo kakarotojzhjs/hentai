@@ -222,7 +222,6 @@
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
             width: 100%;
 
-            /* ANIMAÇÃO MANTIDA */
             animation: cardAppear 0.5s ease forwards;
             opacity: 0;
             transform: translateY(15px);
@@ -564,7 +563,7 @@
                     color: var(--text-muted);
                     padding: 40px;
                 ">
-                Procurando packs aos poucos...
+                Carregando packs...
             </p>
 
         </div>
@@ -928,20 +927,7 @@
 
 
         // ==========================================================
-        // BUSCA PROGRESSIVA
-        //
-        // ORDEM:
-        //
-        // 250
-        // 249
-        // 248
-        // ...
-        // 1
-        //
-        // CADA PACK É FINALIZADO ANTES DE IR PARA O PRÓXIMO.
-        //
-        // ASSIM QUE INFO + LINK + CAPA SÃO ENCONTRADOS,
-        // O CARD É COLOCADO NA TELA IMEDIATAMENTE.
+        // BUSCA BASEADA NO ARQUIVO 'ultimo.txt'
         // ==========================================================
 
         async function autoDiscoverPacks() {
@@ -958,41 +944,38 @@
 
 
             const mediaExtensions = [
-
-                'webm',
-                'webp',
-                'jpg',
-                'png',
-                'jpeg',
-
-                'WEBM',
-                'WEBP',
-                'JPG',
-                'PNG',
-                'JPEG'
+                'webm', 'webp', 'jpg', 'png', 'jpeg',
+                'WEBM', 'WEBP', 'JPG', 'PNG', 'JPEG'
             ];
 
 
+            let ultimoPack = 1;
+
+            try {
+                const resUltimo = await fetch('ultimo.txt?' + Date.now(), { cache: 'no-store' });
+                if (resUltimo.ok) {
+                    const texto = await resUltimo.text();
+                    const numeroLido = parseInt(texto.trim());
+                    if (!isNaN(numeroLido) && numeroLido > 0) {
+                        ultimoPack = numeroLido;
+                    }
+                }
+            } catch (e) {
+                console.log("Não foi possível ler o ultimo.txt, usando padrão 1.");
+            }
+
+
             let encontrouAlgum = false;
-
-
-            // COMEÇA NO MAIOR
-            let i = 250;
+            let i = ultimoPack;
 
 
             while (i >= 1) {
 
                 const numeroAtual = i;
-
-                const folder =
-                    `pack/${numeroAtual}`;
+                const folder = `pack/${numeroAtual}`;
 
 
                 try {
-
-                    // =================================================
-                    // 1 — INFO.TXT
-                    // =================================================
 
                     const infoRes =
                         await fetch(
@@ -1004,11 +987,8 @@
                         );
 
 
-                    // Não tem info -> próximo
                     if (!infoRes.ok) {
-
                         i--;
-
                         continue;
                     }
 
@@ -1019,18 +999,11 @@
                         ).trim();
 
 
-                    // Info vazio -> próximo
                     if (!title) {
-
                         i--;
-
                         continue;
                     }
 
-
-                    // =================================================
-                    // 2 — LINK.TXT
-                    // =================================================
 
                     const linkRes =
                         await fetch(
@@ -1042,11 +1015,8 @@
                         );
 
 
-                    // Não tem link -> próximo
                     if (!linkRes.ok) {
-
                         i--;
-
                         continue;
                     }
 
@@ -1057,18 +1027,11 @@
                         ).trim();
 
 
-                    // Link vazio -> próximo
                     if (!link) {
-
                         i--;
-
                         continue;
                     }
 
-
-                    // =================================================
-                    // 3 — CAPA
-                    // =================================================
 
                     let image = null;
 
@@ -1101,44 +1064,24 @@
                                 break;
                             }
 
-                        } catch (e) {
-
-                            // Continua procurando
-                            // outra extensão.
-                        }
+                        } catch (e) {}
                     }
 
 
-                    // Não encontrou capa -> próximo
                     if (!image) {
-
                         i--;
-
                         continue;
                     }
 
 
-                    // =================================================
-                    // OS 3 FORAM ENCONTRADOS
-                    // =================================================
-
                     const packObj = {
-
-                        numero:
-                            numeroAtual,
-
-                        title:
-                            title,
-
-                        image:
-                            image,
-
-                        link:
-                            link
+                        numero: numeroAtual,
+                        title: title,
+                        image: image,
+                        link: link
                     };
 
 
-                    // Guarda nos dados
                     packsData.push(
                         packObj
                     );
@@ -1146,11 +1089,6 @@
 
                     encontrouAlgum = true;
 
-
-                    // =================================================
-                    // PRIMEIRO PACK:
-                    // REMOVE "PROCURANDO..."
-                    // =================================================
 
                     if (
                         grid.querySelector(
@@ -1161,10 +1099,6 @@
                         grid.innerHTML = '';
                     }
 
-
-                    // =================================================
-                    // MOSTRA O CARD AGORA
-                    // =================================================
 
                     const start =
                         (
@@ -1191,13 +1125,6 @@
                         updatePaginationControls();
 
 
-                        // =================================================
-                        // IMPORTANTE:
-                        //
-                        // FORÇA O NAVEGADOR A DESENHAR O CARD AGORA,
-                        // ANTES DE CONTINUAR PARA O PRÓXIMO PACK.
-                        // =================================================
-
                         await new Promise(
                             resolve =>
                                 requestAnimationFrame(
@@ -1206,8 +1133,6 @@
                         );
 
 
-                        // Mais uma pequena oportunidade para o navegador
-                        // atualizar a tela antes da próxima busca.
                         await new Promise(
                             resolve =>
                                 setTimeout(
@@ -1219,7 +1144,6 @@
 
 
                 } catch (e) {
-
                     console.log(
                         `Erro ao verificar pack ${numeroAtual}:`,
                         e
@@ -1227,17 +1151,9 @@
                 }
 
 
-                // =================================================
-                // AGORA SIM VAI PARA O PRÓXIMO
-                // =================================================
-
                 i--;
             }
 
-
-            // ==========================================================
-            // TERMINOU 250 → 1
-            // ==========================================================
 
             if (!encontrouAlgum) {
 
@@ -1510,4 +1426,4 @@
     </script>
 
 </body>
-    </html>
+</html>
