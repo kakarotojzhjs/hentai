@@ -194,6 +194,31 @@
             transform: translateY(-2px);
         }
 
+        /* Barra de Pesquisa Instantânea */
+        .search-container {
+            max-width: 1200px;
+            margin: 20px auto 0 auto;
+            padding: 0 24px;
+            width: 100%;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 14px 20px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            color: var(--text-main);
+            border-radius: 12px;
+            font-size: 14px;
+            outline: none;
+            transition: all 0.2s ease;
+        }
+
+        .search-input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 15px var(--accent-glow);
+        }
+
         main {
             flex: 1;
             padding: 24px 24px 30px 24px;
@@ -434,7 +459,7 @@
                 padding: 20px 10px;
             }
 
-            .notice-container {
+            .notice-container, .search-container {
                 padding: 0 10px;
             }
 
@@ -549,6 +574,18 @@
 
     </div>
 
+    <!-- Barra de busca instantânea -->
+    <div class="search-container">
+        <input 
+            type="text" 
+            id="search-input" 
+            class="search-input" 
+            placeholder="🔍 Pesquisar pelo info.txt ou número do pack..." 
+            oninput="handleSearch()"
+            autocomplete="off"
+        >
+    </div>
+
     <main>
 
         <div
@@ -651,9 +688,8 @@
 
 
         let packsData = [];
-
+        let filteredPacks = [];
         let currentPage = 1;
-
         const itemsPerPage = 15;
 
 
@@ -700,7 +736,7 @@
 
                 iniciarPresencaOnline();
 
-                autoDiscoverPacks();
+                carregarPacksJson();
             };
 
 
@@ -927,276 +963,58 @@
 
 
         // ==========================================================
-        // BUSCA BASEADA NO ARQUIVO 'ultimo.txt'
+        // CARREGAMENTO RÁPIDO VIA packs.json
         // ==========================================================
 
-        async function autoDiscoverPacks() {
-
-            packsData = [];
-
-            currentPage = 1;
-
-
-            const grid =
-                document.getElementById(
-                    'gallery-grid'
-                );
-
-
-            const mediaExtensions = [
-                'webm', 'webp', 'jpg', 'png', 'jpeg',
-                'WEBM', 'WEBP', 'JPG', 'PNG', 'JPEG'
-            ];
-
-
-            let ultimoPack = 1;
+        async function carregarPacksJson() {
+            const grid = document.getElementById('gallery-grid');
 
             try {
-                const resUltimo = await fetch('ultimo.txt?' + Date.now(), { cache: 'no-store' });
-                if (resUltimo.ok) {
-                    const texto = await resUltimo.text();
-                    const numeroLido = parseInt(texto.trim());
-                    if (!isNaN(numeroLido) && numeroLido > 0) {
-                        ultimoPack = numeroLido;
-                    }
+                const response = await fetch('packs.json?' + Date.now(), { cache: 'no-store' });
+                if (!response.ok) {
+                    throw new Error("packs.json não encontrado");
                 }
+
+                packsData = await response.json();
+                packsData.sort((a, b) => b.numero - a.numero);
+                filteredPacks = [...packsData];
+
+                if (filteredPacks.length === 0) {
+                    grid.innerHTML = `
+                        <div style="grid-column: 1 / -1; text-align: center; padding: 50px 20px; background: var(--bg-card); border-radius: 16px;">
+                            <p style="color: #818cf8; font-weight: 600;">Nenhum pack encontrado!</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                renderGallery();
+
             } catch (e) {
-                console.log("Não foi possível ler o ultimo.txt, usando padrão 1.");
-            }
-
-
-            let encontrouAlgum = false;
-            let i = ultimoPack;
-
-
-            while (i >= 1) {
-
-                const numeroAtual = i;
-                const folder = `pack/${numeroAtual}`;
-
-
-                try {
-
-                    const infoRes =
-                        await fetch(
-                            `${folder}/info.txt?` +
-                            Date.now(),
-                            {
-                                cache: 'no-store'
-                            }
-                        );
-
-
-                    if (!infoRes.ok) {
-                        i--;
-                        continue;
-                    }
-
-
-                    const title =
-                        (
-                            await infoRes.text()
-                        ).trim();
-
-
-                    if (!title) {
-                        i--;
-                        continue;
-                    }
-
-
-                    const linkRes =
-                        await fetch(
-                            `${folder}/link.txt?` +
-                            Date.now(),
-                            {
-                                cache: 'no-store'
-                            }
-                        );
-
-
-                    if (!linkRes.ok) {
-                        i--;
-                        continue;
-                    }
-
-
-                    const link =
-                        (
-                            await linkRes.text()
-                        ).trim();
-
-
-                    if (!link) {
-                        i--;
-                        continue;
-                    }
-
-
-                    let image = null;
-
-
-                    for (
-                        const ext
-                        of mediaExtensions
-                    ) {
-
-                        try {
-
-                            const capaRes =
-                                await fetch(
-                                    `${folder}/capa.${ext}?` +
-                                    Date.now(),
-                                    {
-                                        method: 'HEAD',
-                                        cache: 'no-store'
-                                    }
-                                );
-
-
-                            if (
-                                capaRes.ok
-                            ) {
-
-                                image =
-                                    `${folder}/capa.${ext}`;
-
-                                break;
-                            }
-
-                        } catch (e) {}
-                    }
-
-
-                    if (!image) {
-                        i--;
-                        continue;
-                    }
-
-
-                    const packObj = {
-                        numero: numeroAtual,
-                        title: title,
-                        image: image,
-                        link: link
-                    };
-
-
-                    packsData.push(
-                        packObj
-                    );
-
-
-                    encontrouAlgum = true;
-
-
-                    if (
-                        grid.querySelector(
-                            '#loading-msg'
-                        )
-                    ) {
-
-                        grid.innerHTML = '';
-                    }
-
-
-                    const start =
-                        (
-                            currentPage - 1
-                        ) *
-                        itemsPerPage;
-
-
-                    const end =
-                        start +
-                        itemsPerPage;
-
-
-                    if (
-                        packsData.length > start &&
-                        packsData.length <= end
-                    ) {
-
-                        appendCardToGrid(
-                            packObj
-                        );
-
-
-                        updatePaginationControls();
-
-
-                        await new Promise(
-                            resolve =>
-                                requestAnimationFrame(
-                                    () => resolve()
-                                )
-                        );
-
-
-                        await new Promise(
-                            resolve =>
-                                setTimeout(
-                                    resolve,
-                                    0
-                                )
-                        );
-                    }
-
-
-                } catch (e) {
-                    console.log(
-                        `Erro ao verificar pack ${numeroAtual}:`,
-                        e
-                    );
-                }
-
-
-                i--;
-            }
-
-
-            if (!encontrouAlgum) {
-
                 grid.innerHTML = `
-
-                    <div style="
-                        grid-column: 1 / -1;
-                        text-align: center;
-                        padding: 50px 20px;
-                        background: var(--bg-card);
-                        border: 1px dashed var(--border-subtle);
-                        border-radius: 16px;
-                    ">
-
-                        <p style="
-                            color: #818cf8;
-                            font-weight: 600;
-                            margin-bottom: 8px;
-                            font-size: 15px;
-                        ">
-                            Nenhum pack encontrado ainda!
-                        </p>
-
-                        <p style="
-                            color: var(--text-muted);
-                            font-size: 13px;
-                            line-height: 1.6;
-                        ">
-                            Certifique-se de que cada pasta tem
-                            <b>info.txt</b>,
-                            <b>link.txt</b>
-                            e a capa.
-                        </p>
-
+                    <div style="grid-column: 1 / -1; text-align: center; padding: 50px 20px; background: var(--bg-card); border-radius: 16px;">
+                        <p style="color: #ff3333; font-weight: 600;">Erro: Crie um arquivo <b>packs.json</b> na raiz do site.</p>
                     </div>
-
                 `;
+            }
+        }
 
+
+        // Pesquisa instantânea na memória
+        window.handleSearch = function() {
+            const query = document.getElementById('search-input').value.toLowerCase().trim();
+            
+            if (!query) {
+                filteredPacks = [...packsData];
+            } else {
+                filteredPacks = packsData.filter(pack => {
+                    return pack.title.toLowerCase().includes(query) || pack.numero.toString().includes(query);
+                });
             }
 
-
-            updatePaginationControls();
-        }
+            currentPage = 1;
+            renderGallery();
+        };
 
 
         function getMediaElement(
@@ -1245,63 +1063,6 @@
         }
 
 
-        function appendCardToGrid(
-            pack
-        ) {
-
-            const grid =
-                document.getElementById(
-                    'gallery-grid'
-                );
-
-
-            const card =
-                document.createElement(
-                    'div'
-                );
-
-
-            card.className =
-                'card';
-
-
-            card.innerHTML = `
-
-                <div class="card-img-wrapper">
-
-                    ${getMediaElement(
-                        pack.image,
-                        pack.title
-                    )}
-
-                </div>
-
-
-                <div class="card-content">
-
-                    <div class="card-title">
-                        ${pack.title}
-                    </div>
-
-
-                    <a
-                        href="${pack.link}"
-                        target="_blank"
-                        class="card-btn">
-                        Acessar Pack
-                    </a>
-
-                </div>
-
-            `;
-
-
-            grid.appendChild(
-                card
-            );
-        }
-
-
         window.renderGallery =
             function() {
 
@@ -1327,7 +1088,7 @@
 
 
                 const paginatedItems =
-                    packsData.slice(
+                    filteredPacks.slice(
                         start,
                         end
                     );
@@ -1336,7 +1097,11 @@
                 if (
                     paginatedItems.length === 0
                 ) {
-
+                    grid.innerHTML = `
+                        <div style="grid-column: 1 / -1; text-align: center; padding: 40px; color: var(--text-muted);">
+                            Nenhum pack corresponde à sua busca.
+                        </div>
+                    `;
                     updatePaginationControls();
 
                     return;
@@ -1345,11 +1110,16 @@
 
                 paginatedItems.forEach(
                     pack => {
-
-                        appendCardToGrid(
-                            pack
-                        );
-
+                        const card = document.createElement('div');
+                        card.className = 'card';
+                        card.innerHTML = `
+                            <div class="card-img-wrapper">${getMediaElement(pack.image, pack.title)}</div>
+                            <div class="card-content">
+                                <div class="card-title">${pack.title}</div>
+                                <a href="${pack.link}" target="_blank" class="card-btn">Acessar Pack</a>
+                            </div>
+                        `;
+                        grid.appendChild(card);
                     }
                 );
 
@@ -1365,7 +1135,7 @@
 
                 const totalPages =
                     Math.ceil(
-                        packsData.length /
+                        filteredPacks.length /
                         itemsPerPage
                     ) || 1;
 
@@ -1400,7 +1170,7 @@
 
             const totalPages =
                 Math.ceil(
-                    packsData.length /
+                    filteredPacks.length /
                     itemsPerPage
                 ) || 1;
 
@@ -1420,7 +1190,7 @@
             document.getElementById(
                 'next-btn'
             ).disabled =
-                currentPage === totalPages;
+                currentPage === totalPages || totalPages === 0;
         }
 
     </script>
