@@ -1,0 +1,1066 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minha Galeria</title>
+    <meta name="google-site-verification" content="DMZjrDJAM3YOBquEfHLJhZ56k8lhj_rbhuZNZLxxDPA" />
+    <style>
+        :root {
+            --bg-base: #090d16;
+            --bg-card: #131b2e;
+            --border-subtle: rgba(255, 255, 255, 0.08);
+            --border-hover: rgba(99, 102, 241, 0.5);
+            --primary: #6366f1;
+            --primary-hover: #4f46e5;
+            --text-main: #f1f5f9;
+            --text-muted: #94a3b8;
+            --accent-glow: rgba(99, 102, 241, 0.25);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-base);
+            color: var(--text-main);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            background-image:
+                radial-gradient(
+                    circle at 10% 20%,
+                    rgba(99, 102, 241, 0.08) 0%,
+                    transparent 40%
+                ),
+                radial-gradient(
+                    circle at 90% 80%,
+                    rgba(168, 85, 247, 0.06) 0%,
+                    transparent 40%
+                );
+            background-attachment: fixed;
+        }
+
+        header {
+            background: rgba(9, 13, 22, 0.75);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            padding: 18px 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-subtle);
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .logo {
+            font-size: 20px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            background: linear-gradient(135deg, #818cf8, #e879f9);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .menu-options {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .user-info {
+            color: var(--text-muted);
+            font-size: 13px;
+        }
+
+        .user-info strong {
+            color: var(--text-main);
+            font-weight: 600;
+        }
+
+        .counter-badge {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.25);
+            padding: 5px 12px;
+            border-radius: 30px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #34d399;
+        }
+
+        .counter-badge.online {
+            background: rgba(99, 102, 241, 0.1);
+            border: 1px solid rgba(99, 102, 241, 0.25);
+            color: #818cf8;
+        }
+
+        .btn-change-name {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-subtle);
+            color: var(--text-muted);
+            padding: 6px 14px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.2s ease;
+        }
+
+        .btn-change-name:hover {
+            border-color: var(--primary);
+            color: var(--text-main);
+            background: rgba(99, 102, 241, 0.1);
+        }
+
+        .notice-container {
+            max-width: 1200px;
+            margin: 24px auto 0 auto;
+            padding: 0 24px;
+            width: 100%;
+        }
+
+        .notice-card {
+            background: linear-gradient(
+                135deg,
+                rgba(99, 102, 241, 0.1),
+                rgba(168, 85, 247, 0.1)
+            );
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            border-radius: 16px;
+            padding: 20px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+            flex-wrap: wrap;
+        }
+
+        .notice-text {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            flex: 1;
+        }
+
+        .notice-title {
+            font-size: 15px;
+            font-weight: 700;
+            color: #818cf8;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .notice-desc {
+            font-size: 13px;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        .notice-desc strong {
+            color: var(--text-main);
+            background: rgba(255, 255, 255, 0.1);
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+
+        .telegram-btn {
+            background: #229ed9;
+            color: white;
+            text-decoration: none;
+            padding: 10px 18px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+            box-shadow: 0 4px 12px rgba(34, 158, 217, 0.3);
+        }
+
+        .telegram-btn:hover {
+            background: #1b8ac1;
+            transform: translateY(-2px);
+        }
+
+        /* Barra de Pesquisa Instantânea */
+        .search-container {
+            max-width: 1200px;
+            margin: 20px auto 0 auto;
+            padding: 0 24px;
+            width: 100%;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 14px 20px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            color: var(--text-main);
+            border-radius: 12px;
+            font-size: 14px;
+            outline: none;
+            transition: all 0.2s ease;
+        }
+
+        .search-input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 15px var(--accent-glow);
+        }
+
+        /* Estilos do Menu de Bolhas de Tags */
+        .tags-container {
+            max-width: 1200px;
+            margin: 15px auto 0 auto;
+            padding: 0 24px;
+            width: 100%;
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+            scrollbar-width: thin;
+            scrollbar-color: var(--primary) var(--bg-card);
+        }
+
+        .tags-container::-webkit-scrollbar {
+            height: 6px;
+        }
+
+        .tags-container::-webkit-scrollbar-thumb {
+            background-color: var(--primary);
+            border-radius: 10px;
+        }
+
+        .tag-bubble {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            color: var(--text-muted);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .tag-bubble span {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 2px 6px;
+            border-radius: 10px;
+            font-size: 11px;
+            color: var(--text-main);
+        }
+
+        .tag-bubble:hover, .tag-bubble.active {
+            background: rgba(99, 102, 241, 0.15);
+            border-color: var(--primary);
+            color: var(--text-main);
+            transform: translateY(-2px);
+        }
+
+        .tag-bubble.active span {
+            background: var(--primary);
+            color: white;
+        }
+
+        main {
+            flex: 1;
+            padding: 24px 24px 30px 24px;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .gallery-grid {
+            display: grid !important;
+            grid-template-columns: repeat(3, 1fr) !important;
+            grid-auto-rows: auto;
+            gap: 20px;
+            width: 100%;
+        }
+
+        .card {
+            background-color: var(--bg-card);
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid var(--border-subtle);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
+            width: 100%;
+
+            animation: cardAppear 0.5s ease forwards;
+            opacity: 0;
+            transform: translateY(15px);
+        }
+
+        @keyframes cardAppear {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 30px -10px var(--accent-glow);
+            border-color: var(--border-hover);
+        }
+
+        .card-img-wrapper {
+            width: 100%;
+            aspect-ratio: 2 / 3;
+            overflow: hidden;
+            background-color: #0b101b;
+            position: relative;
+        }
+
+        .card img,
+        .card video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .card:hover img,
+        .card:hover video {
+            transform: scale(1.06);
+        }
+
+        .card-content {
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            flex: 1;
+            justify-content: space-between;
+        }
+
+        .card-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-main);
+            line-height: 1.4;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .card-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            padding: 10px;
+            background: linear-gradient(
+                135deg,
+                var(--primary),
+                #818cf8
+            );
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 13px;
+            letter-spacing: 0.3px;
+            transition: opacity 0.2s, transform 0.1s;
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+        }
+
+        .card-btn:hover {
+            opacity: 0.92;
+        }
+
+        .card-btn:active {
+            transform: scale(0.98);
+        }
+
+        footer {
+            background: rgba(9, 13, 22, 0.75);
+            backdrop-filter: blur(16px);
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            border-top: 1px solid var(--border-subtle);
+        }
+
+        .pagination {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+        }
+
+        .page-btn {
+            padding: 10px 20px;
+            background: var(--bg-card);
+            color: var(--text-main);
+            border: 1px solid var(--border-subtle);
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 13px;
+            transition: all 0.2s;
+        }
+
+        .page-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        .page-btn:hover:not(:disabled) {
+            border-color: var(--primary);
+            background: rgba(99, 102, 241, 0.1);
+        }
+
+        .page-info {
+            font-size: 13px;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        #login-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(5, 8, 15, 0.85);
+            backdrop-filter: blur(12px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            padding: 20px;
+        }
+
+        .modal-content {
+            background: var(--bg-card);
+            padding: 36px;
+            border-radius: 20px;
+            width: 100%;
+            max-width: 400px;
+            border: 1px solid var(--border-subtle);
+            text-align: center;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+        }
+
+        .modal-content h2 {
+            margin-bottom: 8px;
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .modal-content p {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-bottom: 24px;
+            line-height: 1.5;
+        }
+
+        .modal-content input {
+            width: 100%;
+            padding: 12px 16px;
+            margin-bottom: 20px;
+            background: var(--bg-base);
+            border: 1px solid var(--border-subtle);
+            color: white;
+            border-radius: 10px;
+            font-size: 14px;
+            outline: none;
+        }
+
+        .modal-content input:focus {
+            border-color: var(--primary);
+        }
+
+        .modal-content button.btn-submit {
+            width: 100%;
+            padding: 12px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            font-weight: 600;
+            font-size: 14px;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+
+        @media (max-width: 768px) {
+            header {
+                padding: 14px 20px;
+            }
+
+            main {
+                padding: 20px 10px;
+            }
+
+            .notice-container, .search-container, .tags-container {
+                padding: 0 10px;
+            }
+
+            .notice-card {
+                flex-direction: column;
+                align-items: stretch;
+                text-align: center;
+            }
+
+            .notice-title {
+                justify-content: center;
+            }
+
+            .telegram-btn {
+                justify-content: center;
+                width: 100%;
+            }
+
+            .gallery-grid {
+                grid-template-columns: repeat(3, 1fr) !important;
+                gap: 8px;
+            }
+        }
+    </style>
+</head>
+
+<body onload="initAuth()">
+
+    <div id="login-modal">
+        <div class="modal-content">
+            <h2>Bem-vindo(a)</h2>
+
+            <p>
+                Insira seu nome de usuário para acessar o painel.
+            </p>
+
+            <input
+                type="text"
+                id="username-input"
+                placeholder="Seu nome..."
+                autocomplete="off"
+            >
+
+            <button
+                class="btn-submit"
+                onclick="handleLogin()">
+                Entrar
+            </button>
+        </div>
+    </div>
+
+    <header>
+
+        <div class="logo">
+            ⚡ Galeria
+        </div>
+
+        <div class="menu-options">
+
+            <span class="user-info">
+                Usuário:
+                <strong id="current-user-display">-</strong>
+            </span>
+
+            <div class="counter-badge online">
+                🟢 Online:
+                <span id="online-counter">1</span>
+            </div>
+
+            <div class="counter-badge">
+                👥 Cadastrados:
+                <span id="user-counter">...</span>
+            </div>
+
+            <button
+                class="btn-change-name"
+                onclick="openLoginModal()">
+                Alterar
+            </button>
+
+        </div>
+    </header>
+
+    <div class="notice-container">
+
+        <div class="notice-card">
+
+            <div class="notice-text">
+
+                <div class="notice-title">
+                    ⚠️ Aviso Importante
+                </div>
+
+                <div class="notice-desc">
+                    A senha para ter acesso aos packs e conteúdos é:
+                    <strong style="color: #ff3333;">
+                        hentai
+                    </strong>
+                    (ou verifique o canal oficial).
+                </div>
+
+            </div>
+
+            <a
+                href="https://t.me/+-_SV0c4vFbpmOTcx"
+                target="_blank"
+                class="telegram-btn">
+                📢 Canal Oficial (Novidades)
+            </a>
+
+        </div>
+
+    </div>
+
+    <!-- Barra de busca instantânea -->
+    <div class="search-container">
+        <input 
+            type="text" 
+            id="search-input" 
+            class="search-input" 
+            placeholder="🔍 Pesquisar pelo info.txt ou número do pack..." 
+            oninput="handleSearch()"
+            autocomplete="off"
+        >
+    </div>
+
+    <!-- Menu de Bolhas de Tags -->
+    <div class="tags-container" id="tags-menu">
+        <!-- Injetado dinamicamente via JS -->
+    </div>
+
+    <main>
+
+        <div
+            class="gallery-grid"
+            id="gallery-grid">
+
+            <p
+                id="loading-msg"
+                style="
+                    grid-column: 1 / -1;
+                    text-align: center;
+                    color: var(--text-muted);
+                    padding: 40px;
+                ">
+                Carregando packs...
+            </p>
+
+        </div>
+
+    </main>
+
+    <footer>
+
+        <div class="pagination">
+
+            <button
+                class="page-btn"
+                id="prev-btn"
+                onclick="changePage(-1)"
+                disabled>
+                ← Anterior
+            </button>
+
+            <span
+                class="page-info"
+                id="page-info">
+                Página 1 de 1
+            </span>
+
+            <button
+                class="page-btn"
+                id="next-btn"
+                onclick="changePage(1)"
+                disabled>
+                Próxima →
+            </button>
+
+        </div>
+
+    </footer>
+
+    <script type="module">
+
+        import {
+            initializeApp
+        } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
+
+        import {
+            getFirestore,
+            collection,
+            doc,
+            getDoc,
+            setDoc,
+            deleteDoc,
+            onSnapshot,
+            serverTimestamp
+        } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyAQcXNaZrStco_gXgbgG4ikWa0AexUC8nc",
+            authDomain: "cervido-7ce44.firebaseapp.com",
+            projectId: "cervido-7ce44",
+            storageBucket: "cervido-7ce44.firebasestorage.app",
+            messagingSenderId: "57605188151",
+            appId: "1:57605188151:web:b3e8de24117097acaf6db2",
+            measurementId: "G-VRTT13YEZE"
+        };
+
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+
+        let packsData = [];
+        let tagsData = [];
+        let filteredPacks = [];
+        let currentPage = 1;
+        const itemsPerPage = 15;
+        let currentSelectedTag = 'all';
+
+
+        let mySessionId =
+            'user_' +
+            Math.random()
+                .toString(36)
+                .substring(2, 9);
+
+
+        window.initAuth =
+            async function() {
+
+                let currentUser =
+                    localStorage.getItem(
+                        'site_current_user'
+                    );
+
+
+                if (!currentUser) {
+
+                    document.getElementById(
+                        'login-modal'
+                    ).style.display = 'flex';
+
+                } else {
+
+                    document.getElementById(
+                        'login-modal'
+                    ).style.display = 'none';
+
+                    document.getElementById(
+                        'current-user-display'
+                    ).innerText =
+                        currentUser;
+
+                    await registerUser(
+                        currentUser
+                    );
+                }
+
+
+                escutarContadorGlobal();
+                iniciarPresencaOnline();
+                
+                // Carrega os dados do site
+                await carregarPacksJson();
+                await carregarTagsJson();
+            };
+
+
+        window.handleLogin =
+            async function() {
+
+                const input =
+                    document.getElementById(
+                        'username-input'
+                    )
+                    .value
+                    .trim();
+
+
+                if (!input) {
+                    alert('Digite um nome válido.');
+                    return;
+                }
+
+
+                localStorage.setItem('site_current_user', input);
+                document.getElementById('login-modal').style.display = 'none';
+                document.getElementById('current-user-display').innerText = input;
+
+                await registerUser(input);
+            };
+
+
+        async function registerUser(username) {
+            try {
+                const userRef = doc(db, "usuarios_cadastrados", username);
+                const docSnap = await getDoc(userRef);
+
+                if (!docSnap.exists()) {
+                    await setDoc(userRef, {
+                        nome: username,
+                        data: new Date()
+                    });
+                }
+            } catch (e) {
+                console.log("Erro ao salvar usuário:", e);
+            }
+        }
+
+
+        window.openLoginModal = function() {
+            document.getElementById('username-input').value =
+                localStorage.getItem('site_current_user') || '';
+            document.getElementById('login-modal').style.display = 'flex';
+        };
+
+
+        function escutarContadorGlobal() {
+            onSnapshot(
+                collection(db, "usuarios_cadastrados"),
+                (snapshot) => {
+                    document.getElementById('user-counter').innerText = snapshot.size;
+                }
+            );
+        }
+
+
+        function iniciarPresencaOnline() {
+            const presenceRef = doc(db, "usuarios_online", mySessionId);
+            setDoc(presenceRef, { ultimaVez: serverTimestamp() });
+
+            setInterval(() => {
+                setDoc(presenceRef, { ultimaVez: serverTimestamp() }, { merge: true });
+            }, 15000);
+
+            window.addEventListener('beforeunload', () => {
+                deleteDoc(presenceRef);
+            });
+
+            onSnapshot(
+                collection(db, "usuarios_online"),
+                (snapshot) => {
+                    let onlineCount = 0;
+                    const agora = new Date().getTime();
+
+                    snapshot.forEach((docSnap) => {
+                        const data = docSnap.data();
+                        if (data.ultimaVez) {
+                            const timestampOnline = data.ultimaVez.toMillis ? data.ultimaVez.toMillis() : agora;
+                            if (agora - timestampOnline < 45000) {
+                                onlineCount++;
+                            }
+                        } else {
+                            onlineCount++;
+                        }
+                    });
+
+                    document.getElementById('online-counter').innerText = onlineCount > 0 ? onlineCount : 1;
+                }
+            );
+        }
+
+
+        // ==========================================================
+        // CARREGAMENTO DE PACKS E TAGS
+        // ==========================================================
+
+        async function carregarPacksJson() {
+            const grid = document.getElementById('gallery-grid');
+
+            try {
+                const response = await fetch('packs.json?' + Date.now(), { cache: 'no-store' });
+                if (!response.ok) throw new Error("packs.json não encontrado");
+
+                packsData = await response.json();
+                packsData.sort((a, b) => b.numero - a.numero);
+                filteredPacks = [...packsData];
+
+                if (filteredPacks.length === 0) {
+                    grid.innerHTML = `
+                        <div style="grid-column: 1 / -1; text-align: center; padding: 50px 20px; background: var(--bg-card); border-radius: 16px;">
+                            <p style="color: #818cf8; font-weight: 600;">Nenhum pack encontrado!</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                renderGallery();
+
+            } catch (e) {
+                grid.innerHTML = `
+                    <div style="grid-column: 1 / -1; text-align: center; padding: 50px 20px; background: var(--bg-card); border-radius: 16px;">
+                        <p style="color: #ff3333; font-weight: 600;">Erro: Execute o script <b>gerar_json.py</b> para gerar os arquivos JSON.</p>
+                    </div>
+                `;
+            }
+        }
+
+        async function carregarTagsJson() {
+            try {
+                const response = await fetch('tags.json?' + Date.now(), { cache: 'no-store' });
+                if (!response.ok) return;
+
+                tagsData = await response.json();
+                renderTagsMenu();
+            } catch (e) {
+                console.log("tags.json não encontrado ainda.", e);
+            }
+        }
+
+        function renderTagsMenu() {
+            const tagsMenu = document.getElementById('tags-menu');
+            tagsMenu.innerHTML = '';
+
+            const totalPacksCount = packsData.length;
+            
+            // Botão "Todos"
+            const allBubble = document.createElement('div');
+            allBubble.className = `tag-bubble ${currentSelectedTag === 'all' ? 'active' : ''}`;
+            allBubble.innerHTML = `🔥 Todos <span>${totalPacksCount}</span>`;
+            allBubble.onclick = () => filterByTag('all');
+            tagsMenu.appendChild(allBubble);
+
+            // Renderiza bolhas de cada tag
+            tagsData.forEach(item => {
+                const bubble = document.createElement('div');
+                bubble.className = `tag-bubble ${currentSelectedTag === item.name ? 'active' : ''}`;
+                bubble.innerHTML = `${item.name} <span>${item.count}</span>`;
+                bubble.onclick = () => filterByTag(item.name);
+                tagsMenu.appendChild(bubble);
+            });
+        }
+
+        window.filterByTag = function(tagName) {
+            currentSelectedTag = tagName;
+            document.getElementById('search-input').value = ''; // Limpa a busca ao selecionar tag
+
+            if (tagName === 'all') {
+                filteredPacks = [...packsData];
+            } else {
+                // Filtra packs que contêm a tag selecionada dentro do array 'tags'
+                filteredPacks = packsData.filter(pack => pack.tags && pack.tags.includes(tagName));
+            }
+
+            currentPage = 1;
+            renderTagsMenu();
+            renderGallery();
+        };
+
+
+        // Pesquisa instantânea na memória
+        window.handleSearch = function() {
+            const query = document.getElementById('search-input').value.toLowerCase().trim();
+            currentSelectedTag = 'all'; // Reseta a tag ao pesquisar por texto
+            
+            if (!query) {
+                filteredPacks = [...packsData];
+            } else {
+                filteredPacks = packsData.filter(pack => {
+                    return pack.title.toLowerCase().includes(query) || pack.numero.toString().includes(query);
+                });
+            }
+
+            currentPage = 1;
+            renderTagsMenu();
+            renderGallery();
+        };
+
+
+        function getMediaElement(imagePath, title) {
+            const ext = imagePath.split('.').pop().toLowerCase();
+
+            if (ext === 'webm' || ext === 'mp4') {
+                return `
+                    <video src="${imagePath}" autoplay muted loop playsinline></video>
+                `;
+            }
+
+            return `
+                <img src="${imagePath}" alt="${title}" onerror="this.src='https://via.placeholder.com/300x450?text=Sem+Capa'">
+            `;
+        }
+
+
+        window.renderGallery = function() {
+            const grid = document.getElementById('gallery-grid');
+            grid.innerHTML = '';
+
+            const start = (currentPage - 1) * itemsPerPage;
+            const end = start + itemsPerPage;
+            const paginatedItems = filteredPacks.slice(start, end);
+
+            if (paginatedItems.length === 0) {
+                grid.innerHTML = `
+                    <div style="grid-column: 1 / -1; text-align: center; padding: 40px; color: var(--text-muted);">
+                        Nenhum pack corresponde à sua busca ou tag selecionada.
+                    </div>
+                `;
+                updatePaginationControls();
+                return;
+            }
+
+            paginatedItems.forEach(pack => {
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.innerHTML = `
+                    <div class="card-img-wrapper">${getMediaElement(pack.image, pack.title)}</div>
+                    <div class="card-content">
+                        <div class="card-title">${pack.title}</div>
+                        <a href="${pack.link}" target="_blank" class="card-btn">Acessar Pack</a>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+
+            updatePaginationControls();
+        };
+
+
+        window.changePage = function(direction) {
+            const totalPages = Math.ceil(filteredPacks.length / itemsPerPage) || 1;
+            currentPage += direction;
+
+            if (currentPage < 1) currentPage = 1;
+            if (currentPage > totalPages) currentPage = totalPages;
+
+            renderGallery();
+        };
+
+
+        function updatePaginationControls() {
+            const totalPages = Math.ceil(filteredPacks.length / itemsPerPage) || 1;
+
+            document.getElementById('page-info').innerText = `Página ${currentPage} de ${totalPages}`;
+            document.getElementById('prev-btn').disabled = currentPage === 1;
+            document.getElementById('next-btn').disabled = currentPage === totalPages || totalPages === 0;
+        }
+
+    </script>
+
+</body>
+</html>
+
