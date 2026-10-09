@@ -194,16 +194,19 @@
             transform: translateY(-2px);
         }
 
-        /* Barra de Pesquisa Instantânea */
+        /* Barra de Pesquisa e Botão de Tags */
         .search-container {
             max-width: 1200px;
             margin: 20px auto 0 auto;
             padding: 0 24px;
             width: 100%;
+            display: flex;
+            gap: 12px;
+            align-items: center;
         }
 
         .search-input {
-            width: 100%;
+            flex: 1;
             padding: 14px 20px;
             background: var(--bg-card);
             border: 1px solid var(--border-subtle);
@@ -219,33 +222,48 @@
             box-shadow: 0 0 15px var(--accent-glow);
         }
 
-        /* Estilos do Menu de Bolhas de Tags */
+        .tags-toggle-btn {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            color: #818cf8;
+            padding: 14px 20px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+            white-space: nowrap;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .tags-toggle-btn:hover {
+            border-color: var(--primary);
+            background: rgba(99, 102, 241, 0.1);
+            color: var(--text-main);
+        }
+
+        /* Menu Retrátil de Bolhas de Tags */
         .tags-container {
             max-width: 1200px;
             margin: 15px auto 0 auto;
             padding: 0 24px;
             width: 100%;
-            display: flex;
-            gap: 10px;
-            overflow-x: auto;
-            scrollbar-width: thin;
-            scrollbar-color: var(--primary) var(--bg-card);
-        }
-
-        .tags-container::-webkit-scrollbar {
-            height: 6px;
-        }
-
-        .tags-container::-webkit-scrollbar-thumb {
-            background-color: var(--primary);
-            border-radius: 10px;
+            display: none; /* Começa oculto */
+            flex-wrap: wrap;
+            gap: 8px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 14px;
+            padding: 16px;
         }
 
         .tag-bubble {
-            background: var(--bg-card);
+            background: rgba(255, 255, 255, 0.03);
             border: 1px solid var(--border-subtle);
             color: var(--text-muted);
-            padding: 8px 16px;
+            padding: 6px 14px;
             border-radius: 20px;
             font-size: 13px;
             font-weight: 500;
@@ -258,7 +276,7 @@
         }
 
         .tag-bubble span {
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(255, 255, 255, 0.06);
             padding: 2px 6px;
             border-radius: 10px;
             font-size: 11px;
@@ -632,7 +650,7 @@
 
     </div>
 
-    <!-- Barra de busca instantânea -->
+    <!-- Barra de busca e Botão do Menu de Tags -->
     <div class="search-container">
         <input 
             type="text" 
@@ -642,9 +660,12 @@
             oninput="handleSearch()"
             autocomplete="off"
         >
+        <button class="tags-toggle-btn" onclick="toggleTagsMenu()">
+            🏷️ Tags
+        </button>
     </div>
 
-    <!-- Menu de Bolhas de Tags -->
+    <!-- Menu de Bolhas de Tags (Retrátil) -->
     <div class="tags-container" id="tags-menu">
         <!-- Injetado dinamicamente via JS -->
     </div>
@@ -783,7 +804,6 @@
                 escutarContadorGlobal();
                 iniciarPresencaOnline();
                 
-                // Carrega os dados do site
                 await carregarPacksJson();
                 await carregarTagsJson();
             };
@@ -884,10 +904,6 @@
         }
 
 
-        // ==========================================================
-        // CARREGAMENTO DE PACKS E TAGS
-        // ==========================================================
-
         async function carregarPacksJson() {
             const grid = document.getElementById('gallery-grid');
 
@@ -937,14 +953,12 @@
 
             const totalPacksCount = packsData.length;
             
-            // Botão "Todos"
             const allBubble = document.createElement('div');
             allBubble.className = `tag-bubble ${currentSelectedTag === 'all' ? 'active' : ''}`;
             allBubble.innerHTML = `🔥 Todos <span>${totalPacksCount}</span>`;
             allBubble.onclick = () => filterByTag('all');
             tagsMenu.appendChild(allBubble);
 
-            // Renderiza bolhas de cada tag
             tagsData.forEach(item => {
                 const bubble = document.createElement('div');
                 bubble.className = `tag-bubble ${currentSelectedTag === item.name ? 'active' : ''}`;
@@ -954,14 +968,23 @@
             });
         }
 
+        // Função para alternar a exibição do menu retrátil de tags
+        window.toggleTagsMenu = function() {
+            const tagsMenu = document.getElementById('tags-menu');
+            if (tagsMenu.style.display === 'flex') {
+                tagsMenu.style.display = 'none';
+            } else {
+                tagsMenu.style.display = 'flex';
+            }
+        };
+
         window.filterByTag = function(tagName) {
             currentSelectedTag = tagName;
-            document.getElementById('search-input').value = ''; // Limpa a busca ao selecionar tag
+            document.getElementById('search-input').value = '';
 
             if (tagName === 'all') {
                 filteredPacks = [...packsData];
             } else {
-                // Filtra utilizando a lista 'tags' para suportar múltiplas tags por pack
                 filteredPacks = packsData.filter(pack => pack.tags && pack.tags.includes(tagName));
             }
 
@@ -970,11 +993,9 @@
             renderGallery();
         };
 
-
-        // Pesquisa instantânea na memória
         window.handleSearch = function() {
             const query = document.getElementById('search-input').value.toLowerCase().trim();
-            currentSelectedTag = 'all'; // Reseta a tag ao pesquisar por texto
+            currentSelectedTag = 'all';
             
             if (!query) {
                 filteredPacks = [...packsData];
@@ -989,7 +1010,6 @@
             renderGallery();
         };
 
-
         function getMediaElement(imagePath, title) {
             const ext = imagePath.split('.').pop().toLowerCase();
 
@@ -1003,7 +1023,6 @@
                 <img src="${imagePath}" alt="${title}" onerror="this.src='https://via.placeholder.com/300x450?text=Sem+Capa'">
             `;
         }
-
 
         window.renderGallery = function() {
             const grid = document.getElementById('gallery-grid');
@@ -1039,7 +1058,6 @@
             updatePaginationControls();
         };
 
-
         window.changePage = function(direction) {
             const totalPages = Math.ceil(filteredPacks.length / itemsPerPage) || 1;
             currentPage += direction;
@@ -1049,7 +1067,6 @@
 
             renderGallery();
         };
-
 
         function updatePaginationControls() {
             const totalPages = Math.ceil(filteredPacks.length / itemsPerPage) || 1;
