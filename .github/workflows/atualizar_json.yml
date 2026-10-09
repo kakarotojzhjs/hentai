@@ -24,9 +24,9 @@ jobs:
       - name: Executar script para gerar o packs.json
         run: python gerar_json.py
 
-      - name: Enviar packs.json atualizado de volta para o repositorio
+      - name: Enviar packs.json e tags.json atualizados de volta para o repositorio
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
-          commit_message: "Atualizar arquivo packs.json automaticamente"
-          file_pattern: packs.json
+          commit_message: "Atualizar arquivos packs.json e tags.json automaticamente"
+          file_pattern: packs.json tags.json
           
