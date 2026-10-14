@@ -23,14 +23,9 @@ jobs:
       - name: Executar script para gerar o packs.json
         run: python gerar_json.py
 
-      - name: Configurar git do bot
-        run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-
-      - name: Enviar packs.json e tags.json atualizados
-        run: |
-          git add packs.json tags.json
-          git diff --staged --quiet || git commit -m "Atualizar packs.json e tags.json automaticamente"
-          git push
+      - name: Enviar packs.json e tags.json atualizados de volta para o repositorio
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "Atualizar arquivos packs.json e tags.json automaticamente"
+          file_pattern: packs.json tags.json
           
