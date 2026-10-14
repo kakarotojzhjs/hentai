@@ -5,6 +5,7 @@ on:
     paths:
       - 'pack/**'
       - 'ultimo.txt'
+  workflow_dispatch:
 
 jobs:
   build:
